@@ -8,9 +8,16 @@
 </head>
 <body>
 
-<h1> Primeiro acesso</h1>
+	<h1>Primeiro acesso</h1>
 
-<% out.print("seu sucesso grantido"); %>
+	<form action="receber-nome.jsp">
+
+		<input name="nome" /> <input name="idade" />
+		<input type="submit" value="Enviar">
+
+	</form>
+
+
 
 </body>
 </html>
