@@ -8,6 +8,8 @@ import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
+
+// controlers
 @WebServlet("/ServletLogin") // mapeamento de url que vem da tel
 public class ServletLogin extends HttpServlet {
 
@@ -26,9 +28,6 @@ public class ServletLogin extends HttpServlet {
 	/* recebe os dados enviado por um fomulario */
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-
-		System.out.println(request.getParameter("nome"));
-		System.out.println(request.getParameter("idade"));
 
 	}
 
