@@ -11,9 +11,8 @@
 
 	<h1>Login</h1>
 
-	<div>
 		<form action="ServletLogin" method="POST">
-
+			<input type="hidden" value="<%= request.getParameter("url")%>" name="url">
 			<table>
 				<tr>
 					<td>Login</td>
@@ -34,6 +33,6 @@
 
 		<h4>${msg}</h4>
 
-	</div>
+
 </body>
 </html>
