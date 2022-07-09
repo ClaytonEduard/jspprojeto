@@ -5,18 +5,35 @@
 <head>
 <meta charset="ISO-8859-1">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Curso JSP</title>
+<title>Bem vindo Curso JSP</title>
 </head>
 <body>
 
-	<h1>Primeiro acesso</h1>
+	<h1>Login</h1>
 
-	<form action="ServletLogin" method="POST">
+	<div>
+		<form action="ServletLogin" method="POST">
 
-		<input name="nome" /> <input name="idade" /> <input type="submit"
-			value="Enviar">
+			<table>
+				<tr>
+					<td>Login</td>
+					<td><input name="login" type="text" /></td>
+				</tr>
+				<tr>
+					<td>Senha</td>
+					<td><input name="senha" type="password" /></td>
+				</tr>
 
-	</form>
+				<tr>
+					<td></td>
+					<td><input type="submit" value="Enviar"></td>
+				</tr>
+			</table>
+		</form>
 
+
+		<h4>${msg}</h4>
+
+	</div>
 </body>
 </html>
