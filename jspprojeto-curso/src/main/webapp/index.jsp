@@ -11,27 +11,28 @@
 
 	<h1>Login</h1>
 
-		<form action="ServletLogin" method="POST">
-			<input type="hidden" value="<%= request.getParameter("url")%>" name="url">
-			<table>
-				<tr>
-					<td>Login</td>
-					<td><input name="login" type="text" /></td>
-				</tr>
-				<tr>
-					<td>Senha</td>
-					<td><input name="senha" type="password" /></td>
-				</tr>
+	<form action="ServletLogin" method="POST">
+		<input type="hidden" value="<%=request.getParameter("url")%>"
+			name="url">
+		<table>
+			<tr>
+				<td>Login</td>
+				<td><input name="login" type="text" /></td>
+			</tr>
+			<tr>
+				<td>Senha</td>
+				<td><input name="password" type="password" /></td>
+			</tr>
 
-				<tr>
-					<td></td>
-					<td><input type="submit" value="Enviar"></td>
-				</tr>
-			</table>
-		</form>
+			<tr>
+				<td></td>
+				<td><input type="submit" value="Enviar"></td>
+			</tr>
+		</table>
+	</form>
 
 
-		<h4>${msg}</h4>
+	<h4>${msg}</h4>
 
 
 </body>
