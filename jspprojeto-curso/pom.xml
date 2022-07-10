@@ -7,6 +7,19 @@
 	<name>jspprojeto-curso</name>
 	<description>Curso projeto jsp jdev treinamento</description>
 
+
+	<dependencies>
+
+		<!-- https://mvnrepository.com/artifact/org.postgresql/postgresql -->
+		<dependency>
+			<groupId>org.postgresql</groupId>
+			<artifactId>postgresql</artifactId>
+			<version>9.4.1212</version>
+		</dependency>
+
+
+	</dependencies>
+
 	<build>
 		<plugins>
 			<plugin>
