@@ -32,7 +32,7 @@ h1 {
 	top: 20%;
 	left: 38%;
 	color: red;
-}
+}	
 </style>
 
 </head>
@@ -40,18 +40,18 @@ h1 {
 
 	<h1>Bem Vindo</h1>
 
-	<form class="row g-3 needs-validation" action="ServletLogin"
+	<form class="mb-3 needs-validation" action="ServletLogin"
 		method="POST" novalidate="novalidate">
 		<input type="hidden" value="<%=request.getParameter("url")%>"
 			name="url">
 
-		<div class="col-md-6">
+		<div class="mb-3">
 			<label for="login" class="form-label">Login</label> <input id="login"
 				class="form-control" name="login" type="text" required="required" />
 			<div class="invalid-feedback">Informe o Login</div>
 			<div class="valid-feedback">Ok!</div>
 		</div>
-		<div class="col-md-6">
+		<div class="mb-3">
 			<label for="passowrd" class="form-label">Senha</label> <input
 				id="passowrd" class="form-control" name="password" type="password"
 				required="required" />
