@@ -40,20 +40,26 @@ h1 {
 
 	<h1>Bem Vindo</h1>
 
-	<form class="row g-3" action="ServletLogin" method="POST">
+	<form class="row g-3 needs-validation" action="ServletLogin"
+		method="POST" novalidate="novalidate">
 		<input type="hidden" value="<%=request.getParameter("url")%>"
 			name="url">
 
 		<div class="col-md-6">
-			<label class="form-label">Login</label> <input class="form-control"
-				name="login" type="text" />
+			<label for="login" class="form-label">Login</label> <input id="login"
+				class="form-control" name="login" type="text" required="required" />
+			<div class="invalid-feedback">Informe o Login</div>
+			<div class="valid-feedback">Ok!</div>
 		</div>
 		<div class="col-md-6">
-			<label class="form-label">Senha</label> <input class="form-control"
-				name="password" type="password" />
+			<label for="passowrd" class="form-label">Senha</label> <input
+				id="passowrd" class="form-control" name="password" type="password"
+				required="required" />
+			<div class="invalid-feedback">Informe a Senha</div>
+			<div class="valid-feedback">Ok!</div>
 		</div>
-		<div style="">
-			<input class="btn btn-primary" type="submit" value="Enviar">
+		<div>
+			<input class="btn btn-primary" type="submit" value="Logar">
 		</div>
 	</form>
 
@@ -64,5 +70,26 @@ h1 {
 		src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
 		integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
 		crossorigin="anonymous"></script>
+	<script type="text/javascript">
+		// Example starter JavaScript for disabling form submissions if there are invalid fields
+		(function() {
+			'use strict'
+
+			// Fetch all the forms we want to apply custom Bootstrap validation styles to
+			var forms = document.querySelectorAll('.needs-validation')
+
+			// Loop over them and prevent submission
+			Array.prototype.slice.call(forms).forEach(function(form) {
+				form.addEventListener('submit', function(event) {
+					if (!form.checkValidity()) {
+						event.preventDefault()
+						event.stopPropagation()
+					}
+
+					form.classList.add('was-validated')
+				}, false)
+			})
+		})()
+	</script>
 </body>
 </html>
