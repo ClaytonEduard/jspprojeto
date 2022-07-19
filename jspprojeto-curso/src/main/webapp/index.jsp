@@ -40,7 +40,7 @@ h1 {
 
 	<h1>Bem Vindo</h1>
 
-	<form class="mb-3 needs-validation" action="ServletLogin"
+	<form class="mb-3 needs-validation" action="<%= request.getContextPath() %>/ServletLogin"
 		method="POST" novalidate="novalidate">
 		<input type="hidden" value="<%=request.getParameter("url")%>"
 			name="url">
