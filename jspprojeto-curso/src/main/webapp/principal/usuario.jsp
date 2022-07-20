@@ -38,29 +38,41 @@
 													<div class="card-block">
 														<h4 class="sub-title">Cad. Usuário</h4>
 
-														<form class="form-material" action="<%= request.getContextPath() %>/ServletUsuarioController" method="post"> 
+														<form class="form-material"
+															action="<%=request.getContextPath()%>/ServletUsuarioController"
+															method="post">
 															<div class="form-group form-default form-static-label">
 																<input type="text" name="id" id="id" readonly="readonly"
-																	class="form-control"> <span class="form-bar"></span>
-																<label class="float-label" for="id">ID:</label>
+																	value="${modelLogin.id}" class="form-control">
+																<span class="form-bar"></span> <label
+																	class="float-label" for="id">ID:</label>
 															</div>
 															<div class="form-group form-default form-static-label">
 																<input type="text" name="nome" id="nome"
-																	class="form-control" required="required"> <span
-																	class="form-bar"></span> <label class="float-label"
-																	for="nome">Nome: </label>
+																	value="${modelLogin.nome}" class="form-control"
+																	required="required"> <span class="form-bar"></span>
+																<label class="float-label" for="nome">Nome: </label>
 															</div>
 															<div class="form-group form-default form-static-label">
 																<input type="email" name="email" id="email"
-																	class="form-control" placeholder="Enter Email"
-																	required="required" autocomplete="off"> <span class="form-bar"></span> <label
-																	class="float-label" for="email">E-mail:</label>
+																	value="${modelLogin.email}" class="form-control"
+																	placeholder="Entre com e-mail" required="required"
+																	autocomplete="off"> <span class="form-bar"></span>
+																<label class="float-label" for="email">E-mail:</label>
+															</div>
+															<div class="form-group form-default form-static-label">
+																<input type="text" name="login" id="login"
+																	value="${modelLogin.login}" class="form-control"
+																	placeholder="Entre com login" required="required">
+																<span class="form-bar"></span> <label
+																	class="float-label" for="nome">Login: </label>
 															</div>
 															<div class="form-group form-default form-static-label">
 																<input type="password" name="password" id="password"
-																	class="form-control" placeholder="Enter Password"
-																	required="required" autocomplete="off"> <span class="form-bar"></span> <label
-																	class="float-label" for="password">Senha</label>
+																	value="${modelLogin.password}" class="form-control"
+																	placeholder="Entre com a senha" required="required"
+																	autocomplete="off"> <span class="form-bar"></span>
+																<label class="float-label" for="password">Senha</label>
 															</div>
 															<button class="btn btn-primary waves-effect waves-light">Novo</button>
 															<button class="btn btn-success waves-effect waves-light">Salvar</button>
@@ -71,6 +83,7 @@
 												</div>
 											</div>
 										</div>
+										<span>${msg}</span>
 									</div>
 									<!-- Page-body end -->
 								</div>
