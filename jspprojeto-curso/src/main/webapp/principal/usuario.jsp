@@ -51,7 +51,7 @@
 																<input type="text" name="nome" id="nome"
 																	value="${modelLogin.nome}" class="form-control"
 																	required="required"> <span class="form-bar"></span>
-																<label class="float-label" for="nome">Nome: </label>
+																<label class="float-label" for="nome">Nome:  </label>
 															</div>
 															<div class="form-group form-default form-static-label">
 																<input type="email" name="email" id="email"
