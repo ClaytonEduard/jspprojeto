@@ -41,6 +41,8 @@
 														<form class="form-material"
 															action="<%=request.getContextPath()%>/ServletUsuarioController"
 															method="post" id="formUser">
+															<input type="hidden" name="acao" id="acao" value="">
+
 															<div class="form-group form-default form-static-label">
 																<input type="text" name="id" id="id" readonly="readonly"
 																	value="${modelLogin.id}" class="form-control">
@@ -51,7 +53,7 @@
 																<input type="text" name="nome" id="nome"
 																	value="${modelLogin.nome}" class="form-control"
 																	required="required"> <span class="form-bar"></span>
-																<label class="float-label" for="nome">Nome:  </label>
+																<label class="float-label" for="nome">Nome: </label>
 															</div>
 															<div class="form-group form-default form-static-label">
 																<input type="email" name="email" id="email"
@@ -74,11 +76,13 @@
 																	autocomplete="off"> <span class="form-bar"></span>
 																<label class="float-label" for="password">Senha</label>
 															</div>
-															<button class="btn btn-primary waves-effect waves-light"
+															<button type="button"
+																class="btn btn-primary waves-effect waves-light"
 																onclick="limparForm();">Novo</button>
 															<button class="btn btn-success waves-effect waves-light">Salvar</button>
-															<button class="btn btn-info waves-effect waves-light">Excluir</button>
-
+															<button type="button"
+																class="btn btn-info waves-effect waves-light"
+																onclick="criarDelete()">Excluir</button>
 														</form>
 													</div>
 												</div>
@@ -99,13 +103,20 @@
 	<jsp:include page="javascriptfile.jsp"></jsp:include>
 
 	<script type="text/javascript">
+		function criarDelete() {
+			document.getElementById("formUser").method = 'get';
+			document.getElementById("acao").value = 'deletar';
+			document.getElementById("formUser").submit();
+			
+		}
+
 		function limparForm() {
 
-			var elementos = document.getElementById("formUser").elements; /*Retorna os elementos html dentro do form*/
-		    
-		    for (p = 0; p < elementos.length; p ++){
-			    elementos[p].value = '';
-		    }
+			/*Retorna os elementos html dentro do form*/
+			var elementos = document.getElementById("formUser").elements;
+			for (p = 0; p < elementos.length; p++) {
+				elementos[p].value = '';
+			}
 
 		}
 	</script>
