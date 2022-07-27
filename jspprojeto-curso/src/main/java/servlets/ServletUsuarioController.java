@@ -25,6 +25,12 @@ public class ServletUsuarioController extends HttpServlet {
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
+		String acao  =  request.getParameter("acao");
+		
+		if(acao != null && !acao.isEmpty() && acao.equalsIgnoreCase(acao)) {
+			String idUser = request.getParameter("id");
+		}
+		
 
 	}
 
