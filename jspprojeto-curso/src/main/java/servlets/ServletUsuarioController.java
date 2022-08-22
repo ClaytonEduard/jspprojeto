@@ -19,7 +19,7 @@ public class ServletUsuarioController extends HttpServlet {
 	public ServletUsuarioController() {
 		super();
 		//teste
-	}
+	} 
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
