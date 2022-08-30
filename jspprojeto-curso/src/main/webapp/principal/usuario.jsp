@@ -81,7 +81,7 @@
 																onclick="limparForm();">Novo</button>
 															<button class="btn btn-success waves-effect waves-light">Salvar</button>
 															<button type="button"
-																class="btn btn-info waves-effect waves-light"
+																class="btn btn-danger waves-effect waves-light"
 																onclick="criarDelete()">Excluir</button>
 														</form>
 													</div>
