@@ -18,16 +18,33 @@ public class ServletUsuarioController extends HttpServlet {
 
 	public ServletUsuarioController() {
 		super();
-	} 
+	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
-		String acao  =  request.getParameter("acao");
+
+		try {
+			String acao = request.getParameter("acao");
+
+			if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase(acao)) {
+				
+				String idUser = request.getParameter("id");
+				
+				daoUsuarioRepository.deletarUser(idUser);
+				
+				request.setAttribute("msg", "Excluido com sucesso!");
+			}
+			request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
+
+		} catch (Exception e) {
+			
+			e.printStackTrace();
+			RequestDispatcher redirecionar = request.getRequestDispatcher("erro.jsp");
+			
+			request.setAttribute("msg", e.getMessage());
+			redirecionar.forward(request, response);
 		
-		if(acao != null && !acao.isEmpty() && acao.equalsIgnoreCase(acao)) {
-			String idUser = request.getParameter("id");
 		}
-		
 
 	}
 
@@ -57,9 +74,9 @@ public class ServletUsuarioController extends HttpServlet {
 			if (daoUsuarioRepository.validarLogin(modelLogin.getLogin()) && modelLogin.getId() == null) {
 				msg = "Já existe um usuário com o mesmo login, informe outro login.";
 			} else {
-				if(modelLogin.isNovo()) {
+				if (modelLogin.isNovo()) {
 					msg = "Gravado com sucesso";
-				}else {
+				} else {
 					msg = "Atualizado com sucesso";
 				}
 				// salva o usuario
