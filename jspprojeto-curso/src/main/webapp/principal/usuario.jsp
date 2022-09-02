@@ -82,7 +82,7 @@
 															<button class="btn btn-success waves-effect waves-light">Salvar</button>
 															<button type="button"
 																class="btn btn-danger waves-effect waves-light"
-																onclick="criarDelete()">Excluir</button>
+																onclick="criarDeleteComAjax()">Excluir</button>
 														</form>
 													</div>
 												</div>
@@ -103,7 +103,22 @@
 	<jsp:include page="javascriptfile.jsp"></jsp:include>
 
 	<script type="text/javascript">
+	// delete com ajax
+	function criarDeleteComAjax(){
+		if(confirm('Deseja realmente excluir os dados?')){
+		
+			var urlAction = document.getElementById('formUser').action;
+			var idUser =  document.getElementById('id').value;
+			
+			$.ajax({
+				
+			})
+		}	 
+				
+	}
 	
+		
+	// delete com javascript
 		function criarDelete() {
 			
 			if(confirm('Deseja realmente excluir os dados?')){
