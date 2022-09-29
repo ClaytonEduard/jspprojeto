@@ -11,7 +11,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.ModelLogin;
 
-// controlers
+/*O chamando Controller são as servlets ou ServletLoginController*/
 @WebServlet(urlPatterns = { "/principal/ServletLogin", "/ServletLogin" }) // mapeamento de url que vem da tel
 public class ServletLogin extends HttpServlet {
 
