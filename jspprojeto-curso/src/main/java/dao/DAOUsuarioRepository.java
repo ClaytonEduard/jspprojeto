@@ -3,6 +3,9 @@ package dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.List;
 
 import connection.SingleConnectionBanco;
 import model.ModelLogin;
@@ -49,6 +52,34 @@ public class DAOUsuarioRepository {
 		return this.consultaUsuario(objeto.getLogin());
 	}
 
+	public List<ModelLogin> consultaUsuarioList(String nome) throws Exception {
+		ModelLogin modelLogin = new ModelLogin();
+
+		List<ModelLogin> retorno = new ArrayList<ModelLogin>();
+
+		String sql = "SELECT * from model_login where upper(nome) like upper(?)";
+
+		PreparedStatement statement = connection.prepareStatement(sql);
+
+		statement.setString(1,
+				"%" + nome + "%"); /* subistitui o ? do sql para os dados que estao dentro das as duplas */
+
+		ResultSet resultSet = statement.executeQuery();
+
+		/* varer as linhas do resultado do sql */
+
+		while (resultSet.next()) {
+			modelLogin.setEmail(resultSet.getString("email"));
+			modelLogin.setId(resultSet.getLong("id"));
+			modelLogin.setLogin(resultSet.getString("login"));
+			modelLogin.setNome(resultSet.getString("nome"));
+			// modelLogin.setPassword(resultSet.getString("password"));
+			retorno.add(modelLogin);
+		}
+
+		return retorno;
+	}
+
 	public ModelLogin consultaUsuario(String login) throws Exception {
 
 		ModelLogin modelLogin = new ModelLogin();
@@ -56,6 +87,31 @@ public class DAOUsuarioRepository {
 		String sql = "select * from model_login where upper(login) = upper('" + login + "')";
 
 		PreparedStatement statement = connection.prepareStatement(sql);
+
+		ResultSet resultSet = statement.executeQuery();
+
+		while (resultSet.next()) {
+			modelLogin.setId(resultSet.getLong("id"));
+			modelLogin.setNome(resultSet.getString("nome"));
+			modelLogin.setEmail(resultSet.getString("email"));
+			modelLogin.setLogin(resultSet.getString("login"));
+			modelLogin.setPassword(resultSet.getString("password"));
+
+		}
+
+		return modelLogin;
+	}
+
+	// metodo consultar usuario por id
+
+	public ModelLogin consultaUsuarioID(String id) throws Exception {
+
+		ModelLogin modelLogin = new ModelLogin();
+
+		String sql = "select * from model_login where id = ?";
+
+		PreparedStatement statement = connection.prepareStatement(sql);
+		statement.setLong(1, Long.parseLong(id));
 
 		ResultSet resultSet = statement.executeQuery();
 
@@ -84,13 +140,13 @@ public class DAOUsuarioRepository {
 
 	// metodo deletar user
 	public void deletarUser(String idUser) throws Exception {
-		
+
 		String sql = "delete from model_login where id = ?";
-		
+
 		PreparedStatement statement = connection.prepareStatement(sql);
-		
+
 		statement.setLong(1, Long.parseLong(idUser));
-		
+
 		statement.executeUpdate();
 		connection.commit();
 	}
