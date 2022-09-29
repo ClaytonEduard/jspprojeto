@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.util.Objects;
 
 public class ModelLogin implements Serializable {
 
@@ -64,6 +65,30 @@ public class ModelLogin implements Serializable {
 
 	public void setPassword(String password) {
 		this.password = password;
+	}
+
+	@Override
+	public String toString() {
+		return "ModelLogin [id=" + id + ", nome=" + nome + ", email=" + email + ", login=" + login + ", password="
+				+ password + "]";
+	}
+
+	@Override
+	public int hashCode() {
+		return Objects.hash(email, id, login, nome, password);
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (this == obj)
+			return true;
+		if (obj == null)
+			return false;
+		if (getClass() != obj.getClass())
+			return false;
+		ModelLogin other = (ModelLogin) obj;
+		return Objects.equals(email, other.email) && Objects.equals(id, other.id) && Objects.equals(login, other.login)
+				&& Objects.equals(nome, other.nome) && Objects.equals(password, other.password);
 	}
 
 	
