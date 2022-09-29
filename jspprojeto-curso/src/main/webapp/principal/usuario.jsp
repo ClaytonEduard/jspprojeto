@@ -124,26 +124,29 @@
 				<div class="modal-body">
 
 					<div class="input-group mb-3">
-						<input type="text" class="form-control" placeholder="Nome" id="nomeBusca"
-							aria-label="Recipient's username" aria-describedby="basic-addon2">
+						<input type="text" class="form-control" placeholder="Nome"
+							id="nomeBusca" aria-label="Recipient's username"
+							aria-describedby="basic-addon2">
 						<div class="input-group-append">
 							<button class="btn btn-success" type="button"
 								onclick="buscarUsuario();">Buscar</button>
 						</div>
 					</div>
+					<div style="height: 300px; overflow: scroll">
+						<table class="table" id="tabelaresultados">
+							<thead>
+								<tr>
+									<th scope="col">ID</th>
+									<th scope="col">Nome</th>
+									<th scope="col">Ver</th>
+								</tr>
+							</thead>
+							<tbody>
 
-					<table class="table">
-						<thead>
-							<tr>
-								<th scope="col">ID</th>
-								<th scope="col">Nome</th>
-								<th scope="col">Ver</th>
-							</tr>
-						</thead>
-						<tbody>
-
-						</tbody>
-					</table>
+							</tbody>
+						</table>
+					</div>
+					<span id="totalResultados"></span>
 				</div>
 				<div class="modal-footer">
 					<button type="button" class="btn btn-secondary"
@@ -154,13 +157,64 @@
 	</div>
 
 	<script type="text/javascript">
+		// ver editar
+		function verEditar(id) {
+
+			var urlAction = document.getElementById('formUser').action;
+
+			window.location.href = urlAction + '?acao=buscarEditar&id=' + id; // executa o get
+
+
+		}
+
 		// buscar usuario 
 
 		function buscarUsuario() {
 			var nomeBusca = document.getElementById('nomeBusca').value;
 			// so busca no banco se tiver dados
-			if(nomeBusca != null  && nomeBusca != '' && nomeBusca.trim() !=''){
-				alert(nomeBusca);
+			if (nomeBusca != null && nomeBusca != '' && nomeBusca.trim() != '') {
+				var urlAction = document.getElementById('formUser').action;
+
+				$
+						.ajax(
+								{
+									method : "get",
+									url : urlAction,
+									data : "nomeBusca=" + nomeBusca
+											+ '&acao=buscarUserAjax',
+									success : function(response) {
+
+										var json = JSON.parse(response);
+
+										$('#tabelaresultados > tbody > tr')
+												.remove(); //entro na tabela e removo todas as linhas para mostrar um novo resultado
+
+										for (var i = 0; i < json.length; i++) {
+											$('#tabelaresultados > tbody')
+													.append(
+															'<tr> <td>'
+																	+ json[i].id
+																	+ '</td> <td>'
+																	+ json[i].nome
+																	+ '</td> <td><button onclick="verEditar('
+																	+ json[i].id
+																	+ ')" type="button" class="btn btn-info">Ver</button>'
+																	+ '</td> </tr>'); // adcionar novos dados
+
+										}
+
+										/*valores do total da tabela*/
+										document
+												.getElementById('totalResultados').textContent = 'Resultados: '
+												+ json.length;
+
+									}
+								}).fail(
+								function(xhr, status, errorThrown) {
+									alert('Erro ao buscar usuário por nome: '
+											+ xhr.responseText);
+								});
+
 			}
 		}
 
@@ -175,7 +229,7 @@
 				$.ajax({
 					method : "get",
 					url : urlAction,
-					data : "id=" + idUser + '&acao=deletarajax',
+					data : "id=" + idUser + '&acao=7 ',
 					success : function(response) {
 						limparForm();
 						document.getElementById('msg').textContent = response;
