@@ -1,6 +1,9 @@
 package servlets;
 
 import java.io.IOException;
+import java.util.List;
+
+import com.fasterxml.jackson.databind.ObjectMapper;
 
 import dao.DAOUsuarioRepository;
 import jakarta.servlet.RequestDispatcher;
@@ -36,18 +39,40 @@ public class ServletUsuarioController extends HttpServlet {
 
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 
-			} else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("deletarajax")) {
+			} else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("deletarAjax")) {
 
 				String idUser = request.getParameter("id");
 
 				daoUsuarioRepository.deletarUser(idUser);
 
 				response.getWriter().write("Excluido com sucesso!");
+
+			} else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("buscarUserAjax")) {
+
+				String nomeBusca = request.getParameter("nomeBusca");
+
+				List<ModelLogin> dadosJsonUser = daoUsuarioRepository.consultaUsuarioList(nomeBusca);
+
+				ObjectMapper mapper = new ObjectMapper();
+				String json = mapper.writeValueAsString(dadosJsonUser);
+
+				// System.out.println("Dados user " + dadosJsonUser);
+
+				response.getWriter().write(json);
+
+			} else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("buscarEditar")) {
+
+				String id = request.getParameter("id");
+
+				ModelLogin modelLogin = daoUsuarioRepository.consultaUsuarioID(id);
 				
-			} else {
-				
+				request.setAttribute("msg", "Usuário em edição");
+				request.setAttribute("modelLogin", modelLogin);
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 			
+			} else {
+
+				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 			}
 
 		} catch (Exception e) {
