@@ -108,7 +108,7 @@
 													</tr>
 												</thead>
 												<tbody>
-													<c:forEach items="${modelLogins}" var="ml">
+													<c:forEach items='${modelLogins}' var='ml'>
 
 														<tr>
 															<td><c:out value="${ml.id}"></c:out></td>
@@ -258,7 +258,7 @@
 				$.ajax({
 					method : "get",
 					url : urlAction,
-					data : "id=" + idUser + '&acao=7 ',
+					data : "id=" + idUser + '&acao=deletarajax',
 					success : function(response) {
 						limparForm();
 						document.getElementById('msg').textContent = response;
