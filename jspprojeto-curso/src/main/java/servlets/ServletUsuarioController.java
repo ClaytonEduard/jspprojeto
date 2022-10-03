@@ -9,21 +9,20 @@ import dao.DAOUsuarioRepository;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
-import jakarta.servlet.http.HttpServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import model.ModelLogin;
 
 @WebServlet(urlPatterns = { "/ServletUsuarioController/" })
-public class ServletUsuarioController extends HttpServlet {
+public class ServletUsuarioController extends ServletGenericUtil {
 	private static final long serialVersionUID = 1L;
 
 	// instaciando o dao usuario
 	private DAOUsuarioRepository daoUsuarioRepository = new DAOUsuarioRepository();
 
-	public ServletUsuarioController() {
-		super();
-	}
+//	public ServletUsuarioController() {
+//		// super();
+//	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -37,7 +36,7 @@ public class ServletUsuarioController extends HttpServlet {
 
 				daoUsuarioRepository.deletarUser(idUser);
 
-				List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList();
+				List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList(super.getUserLogado(request));
 				request.setAttribute("modelLogins", modelLogins);
 
 				request.setAttribute("msg", "Excluido com sucesso!");
@@ -56,7 +55,8 @@ public class ServletUsuarioController extends HttpServlet {
 
 				String nomeBusca = request.getParameter("nomeBusca");
 
-				List<ModelLogin> dadosJsonUser = daoUsuarioRepository.consultaUsuarioList(nomeBusca);
+				List<ModelLogin> dadosJsonUser = daoUsuarioRepository.consultaUsuarioList(nomeBusca,
+						super.getUserLogado(request));
 
 				ObjectMapper mapper = new ObjectMapper();
 				String json = mapper.writeValueAsString(dadosJsonUser);
@@ -69,9 +69,9 @@ public class ServletUsuarioController extends HttpServlet {
 
 				String id = request.getParameter("id");
 
-				ModelLogin modelLogin = daoUsuarioRepository.consultaUsuarioID(id);
-				
-				List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList();
+				ModelLogin modelLogin = daoUsuarioRepository.consultaUsuarioID(id, super.getUserLogado(request));
+
+				List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList(super.getUserLogado(request));
 				request.setAttribute("modelLogins", modelLogins);
 
 				request.setAttribute("msg", "Usuário em edição");
@@ -80,7 +80,7 @@ public class ServletUsuarioController extends HttpServlet {
 
 			} else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("listarUser")) {
 
-				List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList();
+				List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList(super.getUserLogado(request));
 
 				request.setAttribute("msg", "Usuários carregados");
 				request.setAttribute("modelLogins", modelLogins);
@@ -88,16 +88,17 @@ public class ServletUsuarioController extends HttpServlet {
 			}
 
 			else {
-				List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList();
+				List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList(super.getUserLogado(request));
 				request.setAttribute("modelLogins", modelLogins);
 
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
+				System.out.println("else");
 			}
 
 		} catch (Exception e) {
 
 			e.printStackTrace();
-			
+
 			RequestDispatcher redirecionar = request.getRequestDispatcher("erro.jsp");
 
 			request.setAttribute("msg", e.getMessage());
@@ -120,6 +121,8 @@ public class ServletUsuarioController extends HttpServlet {
 			String email = request.getParameter("email");
 			String login = request.getParameter("login");
 			String password = request.getParameter("password");
+			String perfil = request.getParameter("perfil");
+			String sexo = request.getParameter("sexo");
 
 			ModelLogin modelLogin = new ModelLogin();
 			// se o id for diverente de null e diferente de vazio, recebe a Conversao String
@@ -129,6 +132,8 @@ public class ServletUsuarioController extends HttpServlet {
 			modelLogin.setEmail(email);
 			modelLogin.setLogin(login);
 			modelLogin.setPassword(password);
+			modelLogin.setPerfil(perfil);
+			modelLogin.setSexo(sexo);
 
 			if (daoUsuarioRepository.validarLogin(modelLogin.getLogin()) && modelLogin.getId() == null) {
 				msg = "Já existe um usuário com o mesmo login, informe outro login.";
@@ -139,10 +144,10 @@ public class ServletUsuarioController extends HttpServlet {
 					msg = "Atualizado com sucesso";
 				}
 				// salva o usuario
-				modelLogin = daoUsuarioRepository.gravarUsuario(modelLogin);
+				modelLogin = daoUsuarioRepository.gravarUsuario(modelLogin, super.getUserLogado(request));
 			}
 
-			List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList();
+			List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList(super.getUserLogado(request));
 			request.setAttribute("modelLogins", modelLogins);
 
 			// setar a mensagem no dialog
