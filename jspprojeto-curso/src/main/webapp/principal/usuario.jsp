@@ -1,7 +1,8 @@
+<%@page import="model.ModelLogin"%>
 <%@ page language="java" contentType="text/html; charset=ISO-8859-1"
 	pageEncoding="ISO-8859-1"%>
 
-<%@ taglib  uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 
 
 <!DOCTYPE html>
@@ -67,6 +68,38 @@
 																<label class="float-label" for="email">E-mail:</label>
 															</div>
 															<div class="form-group form-default form-static-label">
+																<select class="form-control"
+																	aria-label="Default select example" name="perfil">
+																	<option disabled="disabled">[Selecione o
+																		perfil]</option>
+																	<option value="ADMIN"
+																		<%ModelLogin modelLogin = (ModelLogin) request.getAttribute("modelLogin");
+if (modelLogin != null && modelLogin.getPerfil().equals("ADMIN")) {
+	out.print(" ");
+	out.print("selected=\"selected\"");
+	out.print(" ");
+}%>>Admin</option>
+																	<option value="SECRETARIA"
+																		<%modelLogin = (ModelLogin) request.getAttribute("modelLogin");
+if (modelLogin != null && modelLogin.getPerfil().equals("SECRETARIA")) {
+	out.print(" ");
+	out.print("selected=\"selected\"");
+	out.print(" ");
+}%>>Secretária</option>
+																	<option value="AUXILIAR"
+																		<%modelLogin = (ModelLogin) request.getAttribute("modelLogin");
+if (modelLogin != null && modelLogin.getPerfil().equals("AUXILIAR")) {
+	out.print(" ");
+	out.print("selected=\"selected\"");
+	out.print(" ");
+}%>>Auxiliar</option>
+																</select> <span class="form-bar"></span> <label
+																
+																
+																	class="float-label" for="nome">Perfil: </label>
+															</div>
+
+															<div class="form-group form-default form-static-label">
 																<input type="text" name="login" id="login"
 																	value="${modelLogin.login}" class="form-control"
 																	placeholder="Entre com login" required="required">
@@ -80,6 +113,29 @@
 																	autocomplete="off"> <span class="form-bar"></span>
 																<label class="float-label" for="password">Senha</label>
 															</div>
+
+															<div class="form-group form-default form-static-label">
+
+																<input type="radio" name="sexo" checked="checked"
+																	value="MASCULINO"
+																	<%modelLogin = (ModelLogin) request.getAttribute("modelLogin");
+
+if (modelLogin != null && modelLogin.getSexo().equals("MASCULINO")) {
+	out.print(" ");
+	out.print("checked=\"checked\"");
+	out.print(" ");
+}%>>Masculino</>
+																<input type="radio" name="sexo" value="FEMININO"
+																	<%modelLogin = (ModelLogin) request.getAttribute("modelLogin");
+
+if (modelLogin != null && modelLogin.getSexo().equals("FEMININO")) {
+	out.print(" ");
+	out.print("checked=\"checked\"");
+	out.print(" ");
+}%>>Feminino</>
+
+															</div>
+
 															<button type="button"
 																class="btn btn-primary waves-effect waves-light"
 																onclick="limparForm();">Novo</button>
@@ -98,8 +154,8 @@
 											</div>
 										</div>
 										<span id="msg">${msg}</span>
-										<div style="height: 300px; overflow: scroll">
-											<table class="table" id="tabelaresultadosview">
+										<div style="height: 300px; overflow: scroll;">
+											<table class="table" id="tabelaresultadosviews">
 												<thead>
 													<tr>
 														<th scope="col">ID</th>
@@ -113,8 +169,8 @@
 														<tr>
 															<td><c:out value="${ml.id}"></c:out></td>
 															<td><c:out value="${ml.nome}"></c:out></td>
-															<td>
-															<a class="btn btn-success" href="<%= request.getContextPath() %>/ServletUsuarioController?acao=buscarEditar&id=${ml.id}">
+															<td><a class="btn btn-success"
+																href="<%= request.getContextPath() %>/ServletUsuarioController?acao=buscarEditar&id=${ml.id}">
 																	Ver</a></td>
 														</tr>
 
@@ -187,6 +243,24 @@
 	</div>
 
 	<script type="text/javascript">
+		function pesquisaCep() {
+			var cep = $("#cep").val();
+
+			$.getJSON("https://viacep.com.br/ws/" + cep + "/json/?callback=?",
+					function(dados) {
+
+						if (!("erro" in dados)) {
+							$("#cep").val(dados.cep);
+							$("#logradouro").val(dados.logradouro);
+							$("#bairro").val(dados.bairro);
+							$("#localidade").val(dados.localidade);
+							$("#uf").val(dados.uf);
+						}
+
+					});
+		}
+
+
 		// ver editar
 		function verEditar(id) {
 
@@ -212,12 +286,9 @@
 									data : "nomeBusca=" + nomeBusca
 											+ '&acao=buscarUserAjax',
 									success : function(response) {
-
 										var json = JSON.parse(response);
-
 										$('#tabelaresultados > tbody > tr')
 												.remove(); //entro na tabela e removo todas as linhas para mostrar um novo resultado
-
 										for (var i = 0; i < json.length; i++) {
 											$('#tabelaresultados > tbody')
 													.append(
@@ -227,8 +298,7 @@
 																	+ json[i].nome
 																	+ '</td> <td><button onclick="verEditar('
 																	+ json[i].id
-																	+ ')" type="button" class="btn btn-info">Ver</button>'
-																	+ '</td> </tr>'); // adcionar novos dados
+																	+ ')" type="button" class="btn btn-info">Ver</button></td></tr>'); // adcionar novos dados
 
 										}
 
