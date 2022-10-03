@@ -3,6 +3,7 @@ package servlets;
 import java.io.IOException;
 
 import dao.DAOLoginRepository;
+import dao.DAOUsuarioRepository;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.annotation.WebServlet;
@@ -19,8 +20,9 @@ public class ServletLogin extends HttpServlet {
 
 	private DAOLoginRepository daoLoginRepository = new DAOLoginRepository();
 
+	private DAOUsuarioRepository daoUsuarioRepository = new DAOUsuarioRepository();
+
 	public ServletLogin() {
-		super();
 	}
 
 	/* recebe os dados pela url em parametros */
@@ -30,7 +32,7 @@ public class ServletLogin extends HttpServlet {
 		String acao = request.getParameter("acao");
 		if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("logout")) {
 			request.getSession().invalidate(); // invalida a sessão
-			RequestDispatcher redirecionar = request.getRequestDispatcher("index.jsp"); // redireciona para o login 
+			RequestDispatcher redirecionar = request.getRequestDispatcher("index.jsp"); // redireciona para o login
 			redirecionar.forward(request, response);
 		} else {
 			// chamando o doPost para nao dar pagina em branco
@@ -53,9 +55,14 @@ public class ServletLogin extends HttpServlet {
 				modelLogin.setLogin(login);
 				modelLogin.setPassword(password);
 
+				/* pesquisando para ver se é um admin */
+				modelLogin = daoUsuarioRepository.consultaUsuarioLogado(login);
+
 				if (daoLoginRepository.validarAutenticacao(modelLogin)) {
 					// getSession, para manter o usuario logado na sessao
 					request.getSession().setAttribute("usuario", modelLogin.getLogin());
+					request.getSession().setAttribute("perfil",
+							modelLogin.getPerfil());/* setando para ocultar as paginas que sao do admin */
 
 					if (url == null || url.equals("null")) {
 						url = "principal/principal.jsp";
