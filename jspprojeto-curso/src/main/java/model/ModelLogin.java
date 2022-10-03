@@ -11,18 +11,44 @@ public class ModelLogin implements Serializable {
 	private String email;
 	private String login;
 	private String password;
-	
-	
-	//saber se é u novo registro
+	private boolean useradmin;
+	private String perfil;
+	private String sexo;
+
+	public String getSexo() {
+		return sexo;
+	}
+
+	public void setSexo(String sexo) {
+		this.sexo = sexo;
+	}
+
+	public String getPerfil() {
+		return perfil;
+	}
+
+	public void setPerfil(String perfil) {
+		this.perfil = perfil;
+	}
+
+	public boolean getUseradmin() {
+		return useradmin;
+	}
+
+	public void setUseradmin(boolean useradmin) {
+		this.useradmin = useradmin;
+	}
+
+	// saber se é u novo registro
 	public boolean isNovo() {
-		if(this.id ==null) {
+		if (this.id == null) {
 			return true;
-		}else if(this.id !=null  && this.id >0) {
+		} else if (this.id != null && this.id > 0) {
 			return false;
 		}
 		return id == null;
 	}
-	
+
 	public Long getId() {
 		return id;
 	}
@@ -70,7 +96,7 @@ public class ModelLogin implements Serializable {
 	@Override
 	public String toString() {
 		return "ModelLogin [id=" + id + ", nome=" + nome + ", email=" + email + ", login=" + login + ", password="
-				+ password + "]";
+				+ password + ", useradmin=" + useradmin + ", perfil=" + perfil + ", sexo=" + sexo + "]";
 	}
 
 	@Override
@@ -90,7 +116,5 @@ public class ModelLogin implements Serializable {
 		return Objects.equals(email, other.email) && Objects.equals(id, other.id) && Objects.equals(login, other.login)
 				&& Objects.equals(nome, other.nome) && Objects.equals(password, other.password);
 	}
-
-	
 
 }
