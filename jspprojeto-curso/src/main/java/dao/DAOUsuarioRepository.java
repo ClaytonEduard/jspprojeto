@@ -103,6 +103,62 @@ public class DAOUsuarioRepository {
 		return this.consultaUsuario(objeto.getLogin(), userLogado);
 	}
 
+	// paginação
+	public int totalPagina(Long userLogado) throws Exception {
+
+		String sql = "select count(1) as total from model_login where usuario_id = " + userLogado;
+
+		PreparedStatement statement = connection.prepareStatement(sql);
+
+		ResultSet resultSet = statement.executeQuery();
+
+		resultSet.next();
+
+		Double cadastros = resultSet.getDouble("total");
+
+		Double porpagina = 5.0;
+
+		Double pagina = cadastros / porpagina;
+
+		Double resto = pagina % 2;
+		if (resto > 0) {
+			pagina++;
+		}
+
+		return pagina.intValue();
+
+	}
+
+	// consulta usuario list paginado
+	public List<ModelLogin> consultaUsuarioListPaginada(Long userLogado, Integer offset) throws Exception {
+
+		List<ModelLogin> retorno = new ArrayList<ModelLogin>();
+
+		String sql = "SELECT * from model_login where useradmin is false and usuario_id = " + userLogado
+				+ "order by nome offset " + offset + " limit 5";
+
+		PreparedStatement statement = connection.prepareStatement(sql);
+
+		ResultSet resultSet = statement.executeQuery();
+
+		/* varer as linhas do resultado do sql */
+
+		while (resultSet.next()) {
+			ModelLogin modelLogin = new ModelLogin();
+			modelLogin.setEmail(resultSet.getString("email"));
+			modelLogin.setId(resultSet.getLong("id"));
+			modelLogin.setLogin(resultSet.getString("login"));
+			modelLogin.setNome(resultSet.getString("nome"));
+			// modelLogin.setPassword(resultSet.getString("password"));
+			modelLogin.setPerfil(resultSet.getString("perfil"));
+			modelLogin.setSexo(resultSet.getString("sexo"));
+
+			retorno.add(modelLogin);
+		}
+
+		return retorno;
+	}
+
 	/* retorna todos os users */
 	public List<ModelLogin> consultaUsuarioList(Long userLogado) throws Exception {
 
