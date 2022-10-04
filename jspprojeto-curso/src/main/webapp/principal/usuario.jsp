@@ -43,7 +43,7 @@
 													<div class="card-block">
 														<h4 class="sub-title">Cad. Usuário</h4>
 
-														<form class="form-material"
+														<form class="form-material" enctype="multipart/form-data"
 															action="<%=request.getContextPath()%>/ServletUsuarioController"
 															method="post" id="formUser">
 															<input type="hidden" name="acao" id="acao" value="">
@@ -54,6 +54,28 @@
 																<span class="form-bar"></span> <label
 																	class="float-label" for="id">ID:</label>
 															</div>
+
+															<div class="form-group form-default input-group mb-4">
+																<div class="input-group-prepend">
+																	<c:if
+																		test="${modelLogin.fotouser != '' && modelLogin.fotouser != null } ">
+																		<img alt="Imagem User" id="fotoembase64"
+																			src="${modelLogin.fotouser}" width="70px">
+																	</c:if>
+																	<c:if
+																		test="${modelLogin.fotouser == ''|| modelLogin.fotouser == null}">
+																		<img alt="Imagem User" id="fotoembase64"
+																			src="assets/images/avatar-1.jpg" width="70px">
+																	</c:if>
+																</div>
+																<input type="file" id="filefoto" name="filefoto"
+																	accept="image/*"
+																	onchange="visualizarImg('fotoembase64','filefoto');"
+																	class="form-control-file"
+																	style="margin-top: 15px; margin-left: 5px">
+															</div>
+
+
 															<div class="form-group form-default form-static-label">
 																<input type="text" name="nome" id="nome"
 																	value="${modelLogin.nome}" class="form-control"
@@ -94,8 +116,6 @@ if (modelLogin != null && modelLogin.getPerfil().equals("AUXILIAR")) {
 	out.print(" ");
 }%>>Auxiliar</option>
 																</select> <span class="form-bar"></span> <label
-																
-																
 																	class="float-label" for="nome">Perfil: </label>
 															</div>
 
@@ -260,6 +280,26 @@ if (modelLogin != null && modelLogin.getSexo().equals("FEMININO")) {
 					});
 		}
 
+		// funcao upload foto
+		function visualizarImg(fotoembase64, filefoto) {
+
+			// campo preview
+			var preview = document.getElementById(fotoembase64);
+			// file do user
+			var fileUser = document.getElementById(filefoto).files[0];
+
+			var reader = new FileReader();
+
+			reader.onloadend = function() {
+				preview.src = reader.result; // carrega a foto na tela
+			};
+			if (fileUser) {
+				reader.readAsDataURL(fileUser); // preview da imagem 
+			} else {
+				preview.src = ''
+			}
+
+		}
 
 		// ver editar
 		function verEditar(id) {

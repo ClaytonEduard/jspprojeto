@@ -22,7 +22,7 @@ import connection.SingleConnectionBanco;
  * Servlet Filter implementation class FilterAuteticacao
  */
 @WebFilter(urlPatterns = { "/principal/*" }) // intercepta todas as requis q vierem do projeto ou mapeamento
-public class FilterAuteticacao extends HttpFilter implements Filter {
+public class FilterAuteticacao extends HttpFilter  implements Filter {
 
 	private static Connection connection;
 

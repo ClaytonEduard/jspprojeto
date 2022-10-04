@@ -3,16 +3,23 @@ package servlets;
 import java.io.IOException;
 import java.util.List;
 
+import org.apache.tomcat.jakartaee.commons.compress.utils.IOUtils;
+import org.apache.tomcat.util.codec.binary.Base64;
+import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
+
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import dao.DAOUsuarioRepository;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
+import jakarta.servlet.annotation.MultipartConfig;
 import jakarta.servlet.annotation.WebServlet;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
+import jakarta.servlet.http.Part;
 import model.ModelLogin;
 
+@MultipartConfig
 @WebServlet(urlPatterns = { "/ServletUsuarioController/" })
 public class ServletUsuarioController extends ServletGenericUtil {
 	private static final long serialVersionUID = 1L;
@@ -20,9 +27,9 @@ public class ServletUsuarioController extends ServletGenericUtil {
 	// instaciando o dao usuario
 	private DAOUsuarioRepository daoUsuarioRepository = new DAOUsuarioRepository();
 
-//	public ServletUsuarioController() {
-//		// super();
-//	}
+	public ServletUsuarioController() {
+		super();
+	}
 
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
@@ -134,6 +141,21 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			modelLogin.setPassword(password);
 			modelLogin.setPerfil(perfil);
 			modelLogin.setSexo(sexo);
+
+			if (ServletFileUpload.isMultipartContent(request)) {
+				Part part = request.getPart("filefoto");// pega foto da tela
+				if (part.getSize() > 0) {
+
+					// converte para um byte
+					byte[] foto = IOUtils.toByteArray(part.getInputStream());// converte a imagem para byte
+					// converte para string
+					String imagemBase64 = "data:image/" + part.getContentType().split("\\/")[1] + ";base64,"
+							+ new Base64().encodeBase64String(foto);
+					System.out.println(imagemBase64);
+					modelLogin.setFotouser(imagemBase64);/* foto do usuer */
+					modelLogin.setExtensaofotouser(part.getContentType().split("\\/")[1]);/* tipo do arquivo */
+				}
+			}
 
 			if (daoUsuarioRepository.validarLogin(modelLogin.getLogin()) && modelLogin.getId() == null) {
 				msg = "Já existe um usuário com o mesmo login, informe outro login.";
