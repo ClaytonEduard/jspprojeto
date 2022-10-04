@@ -58,9 +58,12 @@
 															<div class="form-group form-default input-group mb-4">
 																<div class="input-group-prepend">
 																	<c:if
-																		test="${modelLogin.fotouser != '' && modelLogin.fotouser != null } ">
-																		<img alt="Imagem User" id="fotoembase64"
+																		test="${modelLogin.fotouser != '' && modelLogin.fotouser != null}">
+																		<a
+																			href="<%=request.getContextPath()%>/ServletUsuarioController?acao=downloadFoto&id=${modelLogin.id}">
+																			<img alt="Imagem User" id="fotoembase64"
 																			src="${modelLogin.fotouser}" width="70px">
+																		</a>
 																	</c:if>
 																	<c:if
 																		test="${modelLogin.fotouser == ''|| modelLogin.fotouser == null}">
@@ -185,7 +188,6 @@ if (modelLogin != null && modelLogin.getSexo().equals("FEMININO")) {
 												</thead>
 												<tbody>
 													<c:forEach items='${modelLogins}' var='ml'>
-
 														<tr>
 															<td><c:out value="${ml.id}"></c:out></td>
 															<td><c:out value="${ml.nome}"></c:out></td>
@@ -193,7 +195,6 @@ if (modelLogin != null && modelLogin.getSexo().equals("FEMININO")) {
 																href="<%= request.getContextPath() %>/ServletUsuarioController?acao=buscarEditar&id=${ml.id}">
 																	Ver</a></td>
 														</tr>
-
 													</c:forEach>
 												</tbody>
 											</table>

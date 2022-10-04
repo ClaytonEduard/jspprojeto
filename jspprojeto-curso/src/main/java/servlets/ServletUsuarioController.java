@@ -31,6 +31,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 		super();
 	}
 
+	@SuppressWarnings("static-access")
 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 
@@ -92,6 +93,16 @@ public class ServletUsuarioController extends ServletGenericUtil {
 				request.setAttribute("msg", "Usuários carregados");
 				request.setAttribute("modelLogins", modelLogins);
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
+				
+			} else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("downloadFoto")) {
+				String idUser = request.getParameter("id");
+				ModelLogin modelLogin = daoUsuarioRepository.consultaUsuarioID(idUser, super.getUserLogado(request));
+				if (modelLogin.getFotouser() != null && !modelLogin.getFotouser().isEmpty()) {
+					/* Propriedade Content-Disposition para identificar o downloado no navegador */
+					response.setHeader("Content-Disposition",
+							"attachment;filename=arquivo." + modelLogin.getExtensaofotouser());
+					response.getOutputStream().write(new Base64().decodeBase64(modelLogin.getFotouser().split("\\,")[1]));
+				}
 			}
 
 			else {
@@ -149,6 +160,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 					// converte para um byte
 					byte[] foto = IOUtils.toByteArray(part.getInputStream());// converte a imagem para byte
 					// converte para string
+					@SuppressWarnings("static-access")
 					String imagemBase64 = "data:image/" + part.getContentType().split("\\/")[1] + ";base64,"
 							+ new Base64().encodeBase64String(foto);
 					System.out.println(imagemBase64);
