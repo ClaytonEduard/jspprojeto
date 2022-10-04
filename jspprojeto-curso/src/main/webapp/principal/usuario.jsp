@@ -1,12 +1,12 @@
 <%@page import="model.ModelLogin"%>
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+<%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="ISO-8859-1"%>
 
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core"%>
 
 
 <!DOCTYPE html>
-<html lang="en">
+<html lang="pt-br">
 
 <jsp:include page="head.jsp"></jsp:include>
 
@@ -121,6 +121,60 @@ if (modelLogin != null && modelLogin.getPerfil().equals("AUXILIAR")) {
 																</select> <span class="form-bar"></span> <label
 																	class="float-label" for="nome">Perfil: </label>
 															</div>
+
+
+
+															<!-- inicio dos dados de endereço -->
+
+															<div class="form-group form-default form-static-label">
+																<input onblur="pesquisaCep()" type="text" name="cep"
+																	id="cep" value="${modelLogin.cep}" class="form-control"
+																	placeholder="Entre com CEP" required="required">
+																<span class="form-bar"></span> <label
+																	class="float-label" for="cep">CEP: </label>
+															</div>
+
+															<div class="form-group form-default form-static-label">
+																<input type="text" name="logradouro" id="logradouro"
+																	value="${modelLogin.logradouro}" class="form-control"
+																	placeholder="Entre com logradouro" required="required">
+																<span class="form-bar"></span> <label
+																	class="float-label" for="logradouro">Rua: </label>
+															</div>
+
+															<div class="form-group form-default form-static-label">
+																<input type="text" name="bairro" id="bairro"
+																	value="${modelLogin.bairro}" class="form-control"
+																	placeholder="Entre com bairro" required="required">
+																<span class="form-bar"></span> <label
+																	class="float-label" for="bairro">Bairro: </label>
+															</div>
+
+															<div class="form-group form-default form-static-label">
+																<input type="text" name="localidade" id="localidade"
+																	value="${modelLogin.localidade}" class="form-control"
+																	placeholder="Entre com localidade" required="required">
+																<span class="form-bar"></span> <label
+																	class="float-label" for="localidade">Localidade:
+																</label>
+															</div>
+
+															<div class="form-group form-default form-static-label">
+																<input type="text" name="uf" id="uf"
+																	value="${modelLogin.uf}" class="form-control"
+																	placeholder="Entre com uf" required="required">
+																<span class="form-bar"></span> <label
+																	class="float-label" for="uf">Estado: </label>
+															</div>
+															<div class="form-group form-default form-static-label">
+																<input type="text" name="numero" id="numero"
+																	value="${modelLogin.numero}" class="form-control"
+																	placeholder="Entre com numero" required="required">
+																<span class="form-bar"></span> <label
+																	class="float-label" for="numero">Número: </label>
+															</div>
+															<!-- fim do endereço -->
+
 
 															<div class="form-group form-default form-static-label">
 																<input type="text" name="login" id="login"
@@ -264,21 +318,46 @@ if (modelLogin != null && modelLogin.getSexo().equals("FEMININO")) {
 	</div>
 
 	<script type="text/javascript">
+	
+		function limpa_formulário_cep() {
+			// Limpa valores do formulário de cep.
+			
+			$("#logradouro").val("");
+			$("#bairro").val("");
+			$("#localidade").val("");
+			$("#uf").val("");
+			$("#numero").val("");
+		}
+
 		function pesquisaCep() {
+			//recebe os dados do campo
 			var cep = $("#cep").val();
 
-			$.getJSON("https://viacep.com.br/ws/" + cep + "/json/?callback=?",
-					function(dados) {
+			//Expressão regular para validar o CEP.
+			var validacep = /^[0-9]{8}$/;
+			if (validacep.test(cep)) {
 
-						if (!("erro" in dados)) {
-							$("#cep").val(dados.cep);
-							$("#logradouro").val(dados.logradouro);
-							$("#bairro").val(dados.bairro);
-							$("#localidade").val(dados.localidade);
-							$("#uf").val(dados.uf);
-						}
+				$.getJSON("https://viacep.com.br/ws/" + cep
+						+ "/json/?callback=?", function(dados) {
 
-					});
+					if (!("erro" in dados)) {
+						$("#cep").val(dados.cep);
+						$("#logradouro").val(dados.logradouro);
+						$("#bairro").val(dados.bairro);
+						$("#localidade").val(dados.localidade);
+						$("#uf").val(dados.uf);
+					} else {
+						limpa_formulário_cep();
+						alert("CEP não encontrado.");
+					}
+
+				});
+			}//end if.
+			else {
+				//cep é inválido.
+				limpa_formulário_cep();
+				alert("Formato de CEP inválido.");
+			}
 		}
 
 		// funcao upload foto
