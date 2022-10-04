@@ -93,7 +93,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 				request.setAttribute("msg", "Usuários carregados");
 				request.setAttribute("modelLogins", modelLogins);
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
-				
+
 			} else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("downloadFoto")) {
 				String idUser = request.getParameter("id");
 				ModelLogin modelLogin = daoUsuarioRepository.consultaUsuarioID(idUser, super.getUserLogado(request));
@@ -101,7 +101,8 @@ public class ServletUsuarioController extends ServletGenericUtil {
 					/* Propriedade Content-Disposition para identificar o downloado no navegador */
 					response.setHeader("Content-Disposition",
 							"attachment;filename=arquivo." + modelLogin.getExtensaofotouser());
-					response.getOutputStream().write(new Base64().decodeBase64(modelLogin.getFotouser().split("\\,")[1]));
+					response.getOutputStream()
+							.write(new Base64().decodeBase64(modelLogin.getFotouser().split("\\,")[1]));
 				}
 			}
 
@@ -142,6 +143,14 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			String perfil = request.getParameter("perfil");
 			String sexo = request.getParameter("sexo");
 
+			/* parametros para grava o endereço */
+			String cep = request.getParameter("cep");
+			String logradouro = request.getParameter("logradouro");
+			String bairro = request.getParameter("bairro");
+			String localidade = request.getParameter("localidade");
+			String uf = request.getParameter("uf");
+			String numero = request.getParameter("numero");
+
 			ModelLogin modelLogin = new ModelLogin();
 			// se o id for diverente de null e diferente de vazio, recebe a Conversao String
 			// pra long senao recebe nulo
@@ -152,6 +161,12 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			modelLogin.setPassword(password);
 			modelLogin.setPerfil(perfil);
 			modelLogin.setSexo(sexo);
+			modelLogin.setCep(cep);
+			modelLogin.setLogradouro(logradouro);
+			modelLogin.setBairro(bairro);
+			modelLogin.setLocalidade(localidade);
+			modelLogin.setUf(uf);
+			modelLogin.setNumero(numero);
 
 			if (ServletFileUpload.isMultipartContent(request)) {
 				Part part = request.getPart("filefoto");// pega foto da tela
