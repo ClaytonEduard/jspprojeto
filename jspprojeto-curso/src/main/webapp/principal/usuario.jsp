@@ -13,7 +13,6 @@
 <body>
 
 	<jsp:include page="theme-loader.jsp"></jsp:include>
-	<!--  paramos no minuto 14:00 do video jsp include -->
 	<!-- Pre-loader end -->
 	<div id="pcoded" class="pcoded">
 		<div class="pcoded-overlay-box"></div>

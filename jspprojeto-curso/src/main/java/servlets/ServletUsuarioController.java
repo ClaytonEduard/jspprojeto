@@ -28,7 +28,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 	private DAOUsuarioRepository daoUsuarioRepository = new DAOUsuarioRepository();
 
 	public ServletUsuarioController() {
-		super();
+	//	super();
 	}
 
 	@SuppressWarnings("static-access")
@@ -48,6 +48,9 @@ public class ServletUsuarioController extends ServletGenericUtil {
 				request.setAttribute("modelLogins", modelLogins);
 
 				request.setAttribute("msg", "Excluido com sucesso!");
+
+				// retonnando a paginacao
+				request.setAttribute("totalPagina", daoUsuarioRepository.totalPagina(this.getUserLogado(request)));
 
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 
@@ -84,6 +87,9 @@ public class ServletUsuarioController extends ServletGenericUtil {
 
 				request.setAttribute("msg", "Usuário em edição");
 				request.setAttribute("modelLogin", modelLogin);
+				// retonnando a paginacao
+				request.setAttribute("totalPagina", daoUsuarioRepository.totalPagina(this.getUserLogado(request)));
+
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 
 			} else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("listarUser")) {
@@ -92,6 +98,9 @@ public class ServletUsuarioController extends ServletGenericUtil {
 
 				request.setAttribute("msg", "Usuários carregados");
 				request.setAttribute("modelLogins", modelLogins);
+
+				// retonnando a paginacao
+				request.setAttribute("totalPagina", daoUsuarioRepository.totalPagina(this.getUserLogado(request)));
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 
 			} else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("downloadFoto")) {
@@ -109,7 +118,8 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			else {
 				List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList(super.getUserLogado(request));
 				request.setAttribute("modelLogins", modelLogins);
-
+				// retonnando a paginacao
+				request.setAttribute("totalPagina", daoUsuarioRepository.totalPagina(this.getUserLogado(request)));
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 				System.out.println("else");
 			}
@@ -213,6 +223,9 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			 * request.getRequestDispatcher("principal/usuario.jsp");
 			 * redireciona.forward(request, response);
 			 */
+
+			// retonnando a paginacao
+			request.setAttribute("totalPagina", daoUsuarioRepository.totalPagina(this.getUserLogado(request)));
 			// modo 2
 			request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 
