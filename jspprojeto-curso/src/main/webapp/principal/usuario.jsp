@@ -122,8 +122,6 @@ if (modelLogin != null && modelLogin.getPerfil().equals("AUXILIAR")) {
 																	class="float-label" for="nome">Perfil: </label>
 															</div>
 
-
-
 															<!-- inicio dos dados de endereço -->
 
 															<div class="form-group form-default form-static-label">
@@ -253,6 +251,20 @@ if (modelLogin != null && modelLogin.getSexo().equals("FEMININO")) {
 												</tbody>
 											</table>
 										</div>
+										<nav aria-label="Page navigation example">
+											<ul class="pagination">
+												<%
+												int totalPagina = (int) request.getAttribute("totalPagina");
+
+												for (int p = 0; p < totalPagina; p++) {
+													String url = request.getContextPath() + "/ServletUsuarioController?acao=paginar&pagina=" + (p * 5);
+													out.print("<li class=\"page-item\"><a class=\"page-link\" href=\"" + url + "\">" + (p + 1) + "</a></li>");
+												}
+												%>
+
+
+											</ul>
+										</nav>
 									</div>
 									<!-- Page-body end -->
 								</div>
@@ -318,10 +330,9 @@ if (modelLogin != null && modelLogin.getSexo().equals("FEMININO")) {
 	</div>
 
 	<script type="text/javascript">
-	
 		function limpa_formulário_cep() {
 			// Limpa valores do formulário de cep.
-			
+
 			$("#logradouro").val("");
 			$("#bairro").val("");
 			$("#localidade").val("");
