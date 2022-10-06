@@ -16,7 +16,7 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>ServletLogin</servlet-name>
-		<url-pattern>/servlets/ServletLogin</url-pattern>
+		<url-pattern>/servlets/ServletLogin/*</url-pattern>
 	</servlet-mapping>
 	<filter>
 		<display-name>FilterAuteticacao</display-name>
@@ -35,6 +35,6 @@
 	</servlet>
 	<servlet-mapping>
 		<servlet-name>ServletUsuarioController</servlet-name>
-		<url-pattern>/ServletUsuarioController</url-pattern>
+		<url-pattern>/ServletUsuarioController/*</url-pattern>
 	</servlet-mapping>
 </web-app>

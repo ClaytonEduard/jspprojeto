@@ -1,4 +1,4 @@
-<%@ page language="java" contentType="text/html; charset=ISO-8859-1"
+<%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="ISO-8859-1"%>
 
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
@@ -62,7 +62,7 @@
 				<ul class="pcoded-submenu">
 					<c:if test="${perfil =='ADMIN'}">
 						<li class=" "><a
-							href="<%=request.getContextPath()%>/principal/usuario.jsp"
+							href="<%=request.getContextPath() %>/ServletUsuarioController?acao=listarUser"
 							class="waves-effect waves-dark"> <span class="pcoded-micon"><i
 									class="ti-angle-right"></i></span> <span class="pcoded-mtext"
 								data-i18n="nav.basic-components.alert">Usuário</span> <span

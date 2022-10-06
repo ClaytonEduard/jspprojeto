@@ -134,8 +134,8 @@ public class DAOUsuarioRepository {
 
 		List<ModelLogin> retorno = new ArrayList<ModelLogin>();
 
-		String sql = "SELECT * from model_login where useradmin is false and usuario_id = " + userLogado
-				+ "order by nome offset " + offset + " limit 5";
+		String sql = "select * from model_login where useradmin is false and usuario_id = " + userLogado
+				+ " order by nome offset " + offset + " limit 5";
 
 		PreparedStatement statement = connection.prepareStatement(sql);
 
@@ -164,7 +164,7 @@ public class DAOUsuarioRepository {
 
 		List<ModelLogin> retorno = new ArrayList<ModelLogin>();
 
-		String sql = "SELECT * from model_login where useradmin is false and usuario_id = " + userLogado + " limit 5";
+		String sql = "select * from model_login where useradmin is false and usuario_id = " + userLogado + "limit 5";
 
 		PreparedStatement statement = connection.prepareStatement(sql);
 
@@ -173,7 +173,9 @@ public class DAOUsuarioRepository {
 		/* varer as linhas do resultado do sql */
 
 		while (resultSet.next()) {
+
 			ModelLogin modelLogin = new ModelLogin();
+
 			modelLogin.setEmail(resultSet.getString("email"));
 			modelLogin.setId(resultSet.getLong("id"));
 			modelLogin.setLogin(resultSet.getString("login"));

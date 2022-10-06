@@ -1,4 +1,4 @@
-<%@page import="model.ModelLogin"%>
+<%@ page import="model.ModelLogin"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="ISO-8859-1"%>
 
@@ -254,14 +254,11 @@ if (modelLogin != null && modelLogin.getSexo().equals("FEMININO")) {
 											<ul class="pagination">
 												<%
 												int totalPagina = (int) request.getAttribute("totalPagina");
-
 												for (int p = 0; p < totalPagina; p++) {
 													String url = request.getContextPath() + "/ServletUsuarioController?acao=paginar&pagina=" + (p * 5);
-													out.print("<li class=\"page-item\"><a class=\"page-link\" href=\"" + url + "\">" + (p + 1) + "</a></li>");
+													out.print("<li class=\"page-item\"><a class=\"page-link\"href=\"" + url + "\">" + (p + 1) + "</a></li>");
 												}
 												%>
-
-
 											</ul>
 										</nav>
 									</div>
@@ -295,14 +292,13 @@ if (modelLogin != null && modelLogin.getSexo().equals("FEMININO")) {
 
 					<div class="input-group mb-3">
 						<input type="text" class="form-control" placeholder="Nome"
-							id="nomeBusca" aria-label="Recipient's username"
-							aria-describedby="basic-addon2">
+							id="nomeBusca" aria-label="nome" aria-describedby="basic-addon2">
 						<div class="input-group-append">
 							<button class="btn btn-success" type="button"
 								onclick="buscarUsuario();">Buscar</button>
 						</div>
 					</div>
-					<div style="height: 300px; overflow: scroll">
+					<div style="height: 300px; overflow: scroll;">
 						<table class="table" id="tabelaresultados">
 							<thead>
 								<tr>

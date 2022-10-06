@@ -22,7 +22,7 @@ import connection.SingleConnectionBanco;
  * Servlet Filter implementation class FilterAuteticacao
  */
 @WebFilter(urlPatterns = { "/principal/*" }) // intercepta todas as requis q vierem do projeto ou mapeamento
-public class FilterAuteticacao extends HttpFilter  implements Filter {
+public class FilterAuteticacao implements Filter {
 
 	private static Connection connection;
 
@@ -71,6 +71,7 @@ public class FilterAuteticacao extends HttpFilter  implements Filter {
 
 		} catch (Exception e) {
 			e.printStackTrace();
+			System.out.println(e.getMessage().toString());
 			RequestDispatcher redirecionar = request.getRequestDispatcher("erro.jsp");
 			request.setAttribute("msg", e.getMessage());
 			redirecionar.forward(request, response);
@@ -79,6 +80,7 @@ public class FilterAuteticacao extends HttpFilter  implements Filter {
 			} catch (SQLException e1) {
 
 				e1.printStackTrace();
+				System.out.println(e1.getMessage().toString());
 			}
 		}
 	}
