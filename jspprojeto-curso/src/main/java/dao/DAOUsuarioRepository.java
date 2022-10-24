@@ -159,6 +159,9 @@ public class DAOUsuarioRepository {
 		return retorno;
 	}
 
+	
+	
+	
 	/* retorna todos os users */
 	public List<ModelLogin> consultaUsuarioList(Long userLogado) throws Exception {
 
@@ -190,6 +193,66 @@ public class DAOUsuarioRepository {
 		return retorno;
 	}
 
+	/* lista de dados paginados do dialog de pesquisa */
+	public int consultaUsuarioListTotalPaginaPaginacao(String nome, Long userLogado) throws Exception {
+
+		String sql = "select count(1) as total from model_login where upper(nome) like upper(?) and useradmin is false and usuario_id = ?";
+
+		PreparedStatement statement = connection.prepareStatement(sql);
+
+		statement.setString(1,
+				"%" + nome + "%"); /* subistitui o ? do sql para os dados que estao dentro das as duplas */
+		statement.setLong(2, userLogado);
+		ResultSet resultSet = statement.executeQuery();
+
+		resultSet.next();
+
+		Double cadastros = resultSet.getDouble("total");
+
+		Double porpagina = 5.0;
+
+		Double pagina = cadastros / porpagina;
+
+		Double resto = pagina % 2;
+		if (resto > 0) {
+			pagina++;
+		}
+
+		return pagina.intValue();
+	}
+
+	
+	public List<ModelLogin> consultaUsuarioListOffSet(String nome, Long userLogado, Integer offset) throws Exception {
+
+		List<ModelLogin> retorno = new ArrayList<ModelLogin>();
+
+		String sql = "select * from model_login where upper(nome) like upper(?) and useradmin is false and usuario_id = ? offset " + offset + " limit 5";
+
+		PreparedStatement statement = connection.prepareStatement(sql);
+		statement.setString(1,"%"+nome+"%");
+		statement.setLong(2, userLogado);
+
+		ResultSet resultSet = statement.executeQuery();
+
+		/* varer as linhas do resultado do sql */
+
+		while (resultSet.next()) {
+			ModelLogin modelLogin = new ModelLogin();
+			modelLogin.setEmail(resultSet.getString("email"));
+			modelLogin.setId(resultSet.getLong("id"));
+			modelLogin.setLogin(resultSet.getString("login"));
+			modelLogin.setNome(resultSet.getString("nome"));
+			// modelLogin.setPassword(resultSet.getString("password"));
+			modelLogin.setPerfil(resultSet.getString("perfil"));
+			modelLogin.setSexo(resultSet.getString("sexo"));
+
+			retorno.add(modelLogin);
+		}
+
+		return retorno;
+	}
+	
+	
 	public List<ModelLogin> consultaUsuarioList(String nome, Long userLogado) throws Exception {
 
 		List<ModelLogin> retorno = new ArrayList<ModelLogin>();
@@ -220,6 +283,8 @@ public class DAOUsuarioRepository {
 		return retorno;
 	}
 
+	
+	
 	public ModelLogin consultaUsuarioLogado(String login) throws Exception {
 
 		ModelLogin modelLogin = new ModelLogin();

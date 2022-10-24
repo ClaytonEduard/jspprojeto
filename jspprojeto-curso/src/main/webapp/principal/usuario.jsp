@@ -43,7 +43,7 @@
 														<h4 class="sub-title">Cad. Usuário</h4>
 
 														<form class="form-material" enctype="multipart/form-data"
-															action="<%=request.getContextPath()%>/ServletUsuarioController"
+															action="<%= request.getContextPath()%>/ServletUsuarioController"
 															method="post" id="formUser">
 															<input type="hidden" name="acao" id="acao" value="">
 
@@ -313,7 +313,11 @@ if (modelLogin != null && modelLogin.getSexo().equals("FEMININO")) {
 						</table>
 					</div>
 
+					<nav aria-label="Page navigation example">
+						<ul class="pagination" id="ulPaginacaoUserAjax">
 
+						</ul>
+					</nav>
 					<span id="totalResultados"></span>
 				</div>
 				<div class="modal-footer">
@@ -395,7 +399,58 @@ if (modelLogin != null && modelLogin.getSexo().equals("FEMININO")) {
 			window.location.href = urlAction + '?acao=buscarEditar&id=' + id; // executa o get
 
 		}
+		
+		// buscar user paginação 
+		function buscaUserPagAjax(url) {
+				var urlAction = document.getElementById('formUser').action;
+				var nomeBusca = document.getElementById('nomeBusca').value;
+				$.ajax({
+						method : "get",
+						url : urlAction,
+						data : url,
+						success : function(response, textStatus,xhr) {
+							
+										var json = JSON.parse(response);
+										
+										$('#tabelaresultados > tbody > tr').remove(); //entro na tabela e removo todas as linhas para mostrar um novo resultado
+										$("#ulPaginacaoUserAjax > li").remove();
+										
+										for (var i = 0; i < json.length; i++) {
+											$('#tabelaresultados > tbody').append('<tr> <td>'
+																	+ json[i].id
+																	+ '</td> <td>'
+																	+ json[i].nome
+																	+ '</td> <td><button onclick="verEditar('
+																	+ json[i].id
+																	+ ')" type="button" class="btn btn-info">Ver</button></td></tr>'); // adcionar novos dados
+										}
 
+										/*valores do total da tabela*/
+										document
+												.getElementById('totalResultados').textContent = 'Resultados: '
+												+ json.length;
+										/*colocando paginacao no dialog */
+										var totalPagina = xhr
+												.getResponseHeader("totalPagina");
+										for (var p = 0; p < totalPagina; p++) {
+											var url ='nomeBusca='
+													+ nomeBusca
+													+ '&acao=buscarUserAjaxPage&pagina='
+													+ (p * 5);
+											$("#ulPaginacaoUserAjax").append('<li class="page-item"><a class="page-link" href="#" onclick="buscaUserPagAjax(\''+url+'\')">'+ (p + 1) +'</a></li>');
+											
+										}
+
+									}
+								}).fail(
+								function(xhr, status, errorThrown) {
+									alert('Erro ao buscar usuário por nome: '
+											+ xhr.responseText);
+								});
+				}
+		
+		
+	
 		// buscar usuario 
 
 		function buscarUsuario() {
@@ -404,21 +459,18 @@ if (modelLogin != null && modelLogin.getSexo().equals("FEMININO")) {
 			if (nomeBusca != null && nomeBusca != '' && nomeBusca.trim() != '') {
 				var urlAction = document.getElementById('formUser').action;
 
-				$
-						.ajax(
-								{
+				$.ajax({
 									method : "get",
 									url : urlAction,
-									data : "nomeBusca=" + nomeBusca
-											+ '&acao=buscarUserAjax',
-									success : function(response) {
+									data : "nomeBusca=" + nomeBusca + '&acao=buscarUserAjax',
+									success : function(response, textStatus, xhr) {
 										var json = JSON.parse(response);
-										$('#tabelaresultados > tbody > tr')
-												.remove(); //entro na tabela e removo todas as linhas para mostrar um novo resultado
+										
+										$('#tabelaresultados > tbody > tr').remove(); //entro na tabela e removo todas as linhas para mostrar um novo resultado
+										$("#ulPaginacaoUserAjax > li").remove();
+										
 										for (var i = 0; i < json.length; i++) {
-											$('#tabelaresultados > tbody')
-													.append(
-															'<tr> <td>'
+											$('#tabelaresultados > tbody').append('<tr> <td>'
 																	+ json[i].id
 																	+ '</td> <td>'
 																	+ json[i].nome
@@ -429,9 +481,15 @@ if (modelLogin != null && modelLogin.getSexo().equals("FEMININO")) {
 										}
 
 										/*valores do total da tabela*/
-										document
-												.getElementById('totalResultados').textContent = 'Resultados: '
-												+ json.length;
+										document.getElementById('totalResultados').textContent = 'Resultados: '+ json.length;
+										/*colocando paginacao no dialog */
+										var totalPagina = xhr.getResponseHeader("totalPagina");
+										for (var p = 0; p < totalPagina; p++) {
+											var url = 'nomeBusca='
+													+ nomeBusca
+													+ '&acao=buscarUserAjaxPage&pagina='+ (p * 5);
+											  $("#ulPaginacaoUserAjax").append('<li class="page-item"><a class="page-link" href="#" onclick="buscaUserPagAjax(\''+url+'\')">'+ (p + 1) +'</a></li>');
+										}
 
 									}
 								}).fail(
