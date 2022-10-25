@@ -159,9 +159,6 @@ public class DAOUsuarioRepository {
 		return retorno;
 	}
 
-	
-	
-	
 	/* retorna todos os users */
 	public List<ModelLogin> consultaUsuarioList(Long userLogado) throws Exception {
 
@@ -221,15 +218,15 @@ public class DAOUsuarioRepository {
 		return pagina.intValue();
 	}
 
-	
 	public List<ModelLogin> consultaUsuarioListOffSet(String nome, Long userLogado, Integer offset) throws Exception {
 
 		List<ModelLogin> retorno = new ArrayList<ModelLogin>();
 
-		String sql = "select * from model_login where upper(nome) like upper(?) and useradmin is false and usuario_id = ? offset " + offset + " limit 5";
+		String sql = "select * from model_login where upper(nome) like upper(?) and useradmin is false and usuario_id = ? offset "
+				+ offset + " limit 5";
 
 		PreparedStatement statement = connection.prepareStatement(sql);
-		statement.setString(1,"%"+nome+"%");
+		statement.setString(1, "%" + nome + "%");
 		statement.setLong(2, userLogado);
 
 		ResultSet resultSet = statement.executeQuery();
@@ -251,8 +248,7 @@ public class DAOUsuarioRepository {
 
 		return retorno;
 	}
-	
-	
+
 	public List<ModelLogin> consultaUsuarioList(String nome, Long userLogado) throws Exception {
 
 		List<ModelLogin> retorno = new ArrayList<ModelLogin>();
@@ -283,8 +279,6 @@ public class DAOUsuarioRepository {
 		return retorno;
 	}
 
-	
-	
 	public ModelLogin consultaUsuarioLogado(String login) throws Exception {
 
 		ModelLogin modelLogin = new ModelLogin();
@@ -381,6 +375,40 @@ public class DAOUsuarioRepository {
 	}
 
 	// metodo consultar usuario por id
+
+	public ModelLogin consultaUsuarioID(Long id) throws Exception {
+
+		ModelLogin modelLogin = new ModelLogin();
+
+		String sql = "select * from model_login where id = ? and useradmin is false";
+
+		PreparedStatement statement = connection.prepareStatement(sql);
+		statement.setLong(1, id);
+
+		ResultSet resultSet = statement.executeQuery();
+
+		while (resultSet.next()) {
+			modelLogin.setId(resultSet.getLong("id"));
+			modelLogin.setNome(resultSet.getString("nome"));
+			modelLogin.setEmail(resultSet.getString("email"));
+			modelLogin.setLogin(resultSet.getString("login"));
+			modelLogin.setPassword(resultSet.getString("password"));
+			modelLogin.setPerfil(resultSet.getString("perfil"));
+			modelLogin.setSexo(resultSet.getString("sexo"));
+			modelLogin.setFotouser(resultSet.getString("fotouser"));
+			modelLogin.setExtensaofotouser(resultSet.getString("extensaofotouser"));
+			modelLogin.setCep(resultSet.getString("cep"));
+			modelLogin.setLogradouro(resultSet.getString("logradouro"));
+			modelLogin.setBairro(resultSet.getString("bairro"));
+			modelLogin.setLocalidade(resultSet.getString("localidade"));
+			modelLogin.setUf(resultSet.getString("uf"));
+			modelLogin.setNumero(resultSet.getString("numero"));
+		}
+
+		return modelLogin;
+	}
+
+	// metodo consultar usuario por id + usuario logado
 
 	public ModelLogin consultaUsuarioID(String id, Long userLogado) throws Exception {
 
