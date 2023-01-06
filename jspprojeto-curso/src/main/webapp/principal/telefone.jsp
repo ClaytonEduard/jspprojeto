@@ -85,7 +85,7 @@
 															<td><c:out value="${f.id}"></c:out></td>
 															<td><c:out value="${f.numero}"></c:out></td>
 															<td><a class="btn btn-success"
-																href="<%= request.getContextPath() %>/ServletTelefone?acao=excluir&id=${ml.id}">
+																href="<%= request.getContextPath() %>/ServletTelefone?acao=excluir&id=${f.id}&userpai=${modelLogin.id}">
 																	Excluir</a></td>
 														</tr>
 													</c:forEach>
