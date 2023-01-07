@@ -84,16 +84,26 @@
 																	required="required"> <span class="form-bar"></span>
 																<label class="float-label" for="nome">Nome: </label>
 															</div>
-															
-															
+
+
 															<div class="form-group form-default form-static-label">
-																<input type="text" name="dataNascimento" id="dataNascimento"
-																	value="${modelLogin.dataNascimento}" class="form-control"
-																	required="required"> <span class="form-bar"></span>
-																<label class="float-label" for="nome">Dat. Nascimento: </label>
+																<input type="text" name="dataNascimento"
+																	id="dataNascimento"
+																	value="${modelLogin.dataNascimento}"
+																	class="form-control" required="required"> <span
+																	class="form-bar"></span> <label class="float-label"
+																	for="nome">Dat. Nascimento: </label>
 															</div>
-															
-															
+
+
+															<div class="form-group form-default form-static-label">
+																<input type="text" name="rendamensal" id="rendamensal"
+																	value="${modelLogin.rendaMensal}" class="form-control"
+																	required="required"> <span class="form-bar"></span>
+																<label class="float-label" for="nome">Renda
+																	Mensal: </label>
+															</div>
+
 															<div class="form-group form-default form-static-label">
 																<input type="email" name="email" id="email"
 																	value="${modelLogin.email}" class="form-control"
@@ -345,34 +355,70 @@ if (modelLogin != null && modelLogin.getSexo().equals("FEMININO")) {
 	</div>
 
 	<script type="text/javascript">
-	// funcao para traduzir o calendario
-	$( function() {
-		  
-		  $("#dataNascimento").datepicker({
-			    dateFormat: 'dd/mm/yy',
-			    dayNames: ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'],
-			    dayNamesMin: ['D','S','T','Q','Q','S','S','D'],
-			    dayNamesShort: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb','Dom'],
-			    monthNames: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
-			    monthNamesShort: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'],
-			    nextText: 'Próximo',
-			    prevText: 'Anterior'
-			});
-	} );
-	
-	
-	
-	
-	//funcao jquery para aceitar somente numeros no campo
-	$("#numero").keypress(function(event){
-		return /\d/.test(String.fromCharCode(event.keyCode));
-	});
-	
-	//funcao jquery para aceitar somente numeros no campo
-	$("#cep").keypress(function(event){
-		return /\d/.test(String.fromCharCode(event.keyCode));
-	});
-	
+		// funcao para a renda
+		$("#rendamensal").maskMoney({
+			showSymbol : true,
+			symbol : "R$ ",
+			decimal : ",",
+			thousands : "."
+		});
+		//formatador monetario javascript
+		const formatter = new Intl.NumberFormat('pt-BR', {
+			currency : 'BRL',
+			minimumFractionDigits : 2
+
+		});
+		
+		$("#rendamensal").val(formatter.format($("#rendamensal").val()));
+		
+		$("#rendamensal").focus();
+		
+		// fim funcao renda -------------------
+		
+		//-- inicio conversao data nascimento
+		var dataNascimento = $("#dataNascimento").val();
+		
+		var dateFormat = new Date(dataNascimento);
+		
+		$("#dataNascimento").val(dateFormat.toLocaleDateString('pt-BR', {timeZone: 'UTC'}));
+		
+		$("#nome").focus();
+
+		// funcao para traduzir o calendario
+		$(function() {
+
+			$("#dataNascimento")
+					.datepicker(
+							{
+								dateFormat : 'dd/mm/yy',
+								dayNames : [ 'Domingo', 'Segunda', 'Terça',
+										'Quarta', 'Quinta', 'Sexta', 'Sábado' ],
+								dayNamesMin : [ 'D', 'S', 'T', 'Q', 'Q', 'S',
+										'S', 'D' ],
+								dayNamesShort : [ 'Dom', 'Seg', 'Ter', 'Qua',
+										'Qui', 'Sex', 'Sáb', 'Dom' ],
+								monthNames : [ 'Janeiro', 'Fevereiro', 'Março',
+										'Abril', 'Maio', 'Junho', 'Julho',
+										'Agosto', 'Setembro', 'Outubro',
+										'Novembro', 'Dezembro' ],
+								monthNamesShort : [ 'Jan', 'Fev', 'Mar', 'Abr',
+										'Mai', 'Jun', 'Jul', 'Ago', 'Set',
+										'Out', 'Nov', 'Dez' ],
+								nextText : 'Próximo',
+								prevText : 'Anterior'
+							});
+		});
+
+		//funcao jquery para aceitar somente numeros no campo
+		$("#numero").keypress(function(event) {
+			return /\d/.test(String.fromCharCode(event.keyCode));
+		});
+
+		//funcao jquery para aceitar somente numeros no campo
+		$("#cep").keypress(function(event) {
+			return /\d/.test(String.fromCharCode(event.keyCode));
+		});
+
 		function limpa_formulário_cep() {
 			// Limpa valores do formulário de cep.
 

@@ -174,7 +174,6 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			String id = request.getParameter("id");
 			String nome = request.getParameter("nome");
 			String email = request.getParameter("email");
-			String dataNascimento = request.getParameter("dataNascimento");
 			String login = request.getParameter("login");
 			String password = request.getParameter("password");
 			String perfil = request.getParameter("perfil");
@@ -187,6 +186,10 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			String localidade = request.getParameter("localidade");
 			String uf = request.getParameter("uf");
 			String numero = request.getParameter("numero");
+			String dataNascimento = request.getParameter("dataNascimento");
+			
+			String rendaMensal = request.getParameter("rendamensal");
+			rendaMensal = rendaMensal.split("\\ ")[1].replaceAll("\\.", "").replaceAll("\\,", ".");
 
 			ModelLogin modelLogin = new ModelLogin();
 			// se o id for diverente de null e diferente de vazio, recebe a Conversao String
@@ -204,7 +207,8 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			modelLogin.setLocalidade(localidade);
 			modelLogin.setUf(uf);
 			modelLogin.setNumero(numero);
-			modelLogin.setDataNascimento(new Date(new SimpleDateFormat("dd/mm/yyyy").parse(dataNascimento).getTime()));
+			modelLogin.setDataNascimento(Date.valueOf(new SimpleDateFormat("yyyy-mm-dd").format(new SimpleDateFormat("dd/mm/yyyy").parse(dataNascimento))));
+			modelLogin.setRendaMensal(Double.valueOf(rendaMensal));
 
 			if (ServletFileUpload.isMultipartContent(request)) {
 				Part part = request.getPart("filefoto");// pega foto da tela

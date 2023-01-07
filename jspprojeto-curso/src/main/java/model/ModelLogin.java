@@ -17,6 +17,8 @@ public class ModelLogin implements Serializable {
 	private String sexo;
 	
 	private Date dataNascimento;
+	
+	private Double rendaMensal;
 
 	/* upload de imagem */
 
@@ -33,8 +35,15 @@ public class ModelLogin implements Serializable {
 	private String uf;
 	private String numero;
 	
-
 	
+	public Double getRendaMensal() {
+		return rendaMensal;
+	}
+
+	public void setRendaMensal(Double rendaMensal) {
+		this.rendaMensal = rendaMensal;
+	}
+
 	public Date getDataNascimento() {
 		return dataNascimento;
 	}
@@ -189,9 +198,9 @@ public class ModelLogin implements Serializable {
 	public String toString() {
 		return "ModelLogin [id=" + id + ", nome=" + nome + ", email=" + email + ", login=" + login + ", password="
 				+ password + ", useradmin=" + useradmin + ", perfil=" + perfil + ", sexo=" + sexo + ", dataNascimento="
-				+ dataNascimento + ", fotouser=" + fotouser + ", extensaofotouser=" + extensaofotouser + ", cep=" + cep
-				+ ", logradouro=" + logradouro + ", bairro=" + bairro + ", localidade=" + localidade + ", uf=" + uf
-				+ ", numero=" + numero + "]";
+				+ dataNascimento + ", rendaMensal=" + rendaMensal + ", fotouser=" + fotouser + ", extensaofotouser="
+				+ extensaofotouser + ", cep=" + cep + ", logradouro=" + logradouro + ", bairro=" + bairro
+				+ ", localidade=" + localidade + ", uf=" + uf + ", numero=" + numero + "]";
 	}
 
 	@Override
