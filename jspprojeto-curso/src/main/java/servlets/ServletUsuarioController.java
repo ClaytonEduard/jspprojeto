@@ -1,6 +1,8 @@
 package servlets;
 
 import java.io.IOException;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.List;
 
 import org.apache.tomcat.jakartaee.commons.compress.utils.IOUtils;
@@ -78,7 +80,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 						.consultaUsuarioListTotalPaginaPaginacao(nomeBusca, super.getUserLogado(request)));
 				response.getWriter().write(json);
 
-			}  else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("buscarUserAjaxPage")) {
+			} else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("buscarUserAjaxPage")) {
 
 				String nomeBusca = request.getParameter("nomeBusca");
 				String pagina = request.getParameter("pagina");
@@ -94,8 +96,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 						.consultaUsuarioListTotalPaginaPaginacao(nomeBusca, super.getUserLogado(request)));
 				response.getWriter().write(json);
 
-			}
-			else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("buscarEditar")) {
+			} else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("buscarEditar")) {
 
 				String id = request.getParameter("id");
 
@@ -173,6 +174,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			String id = request.getParameter("id");
 			String nome = request.getParameter("nome");
 			String email = request.getParameter("email");
+			String dataNascimento = request.getParameter("dataNascimento");
 			String login = request.getParameter("login");
 			String password = request.getParameter("password");
 			String perfil = request.getParameter("perfil");
@@ -202,6 +204,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			modelLogin.setLocalidade(localidade);
 			modelLogin.setUf(uf);
 			modelLogin.setNumero(numero);
+			modelLogin.setDataNascimento(new Date(new SimpleDateFormat("dd/mm/yyyy").parse(dataNascimento).getTime()));
 
 			if (ServletFileUpload.isMultipartContent(request)) {
 				Part part = request.getPart("filefoto");// pega foto da tela

@@ -1,6 +1,7 @@
 package model;
 
 import java.io.Serializable;
+import java.sql.Date;
 import java.util.Objects;
 
 public class ModelLogin implements Serializable {
@@ -14,6 +15,8 @@ public class ModelLogin implements Serializable {
 	private boolean useradmin;
 	private String perfil;
 	private String sexo;
+	
+	private Date dataNascimento;
 
 	/* upload de imagem */
 
@@ -30,6 +33,15 @@ public class ModelLogin implements Serializable {
 	private String uf;
 	private String numero;
 	
+
+	
+	public Date getDataNascimento() {
+		return dataNascimento;
+	}
+
+	public void setDataNascimento(Date dataNascimento) {
+		this.dataNascimento = dataNascimento;
+	}
 
 	public String getCep() {
 		return cep;
@@ -176,9 +188,10 @@ public class ModelLogin implements Serializable {
 	@Override
 	public String toString() {
 		return "ModelLogin [id=" + id + ", nome=" + nome + ", email=" + email + ", login=" + login + ", password="
-				+ password + ", useradmin=" + useradmin + ", perfil=" + perfil + ", sexo=" + sexo + ", fotouser="
-				+ fotouser + ", extensaofotouser=" + extensaofotouser + ", cep=" + cep + ", logradouro=" + logradouro
-				+ ", bairro=" + bairro + ", localidade=" + localidade + ", uf=" + uf + ", numero=" + numero + "]";
+				+ password + ", useradmin=" + useradmin + ", perfil=" + perfil + ", sexo=" + sexo + ", dataNascimento="
+				+ dataNascimento + ", fotouser=" + fotouser + ", extensaofotouser=" + extensaofotouser + ", cep=" + cep
+				+ ", logradouro=" + logradouro + ", bairro=" + bairro + ", localidade=" + localidade + ", uf=" + uf
+				+ ", numero=" + numero + "]";
 	}
 
 	@Override

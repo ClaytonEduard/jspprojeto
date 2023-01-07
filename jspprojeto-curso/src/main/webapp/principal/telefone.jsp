@@ -105,6 +105,14 @@
 		</div>
 	</div>
 	<jsp:include page="javascriptfile.jsp"></jsp:include>
+
+
+	<script type="text/javascript">
+		//funcao jquery para aceitar somente numeros no campo
+		$("#numero").keypress(function(event) {
+			return /\d/.test(String.fromCharCode(event.keyCode));
+		});
+	</script>
 </body>
 
 </html>
