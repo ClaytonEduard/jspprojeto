@@ -60,5 +60,21 @@ public class DAOTelefoneRepository {
 		connection.commit();
 
 	}
-
+	
+	
+	// evitar telefones duplicados
+	
+	public boolean existeFone(String fone, Long idUse) throws Exception {
+		
+		String sql =  "select count(1) > 0 as existe from telefone where usuario_pai_id = ? and numero = ?";
+		PreparedStatement statement = connection.prepareStatement(sql);
+		statement.setLong(1, idUse);
+		statement.setString(2, fone);
+		
+		ResultSet rs = statement.executeQuery();
+		
+		rs.next();
+		
+		return rs.getBoolean("existe");
+	}
 }
