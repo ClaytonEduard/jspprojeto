@@ -142,6 +142,22 @@ public class ServletUsuarioController extends ServletGenericUtil {
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 			}
 
+			// acao de mostrar relatorios
+			else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("imprimirRelatorioUser")) {
+
+				String dataInicial = request.getParameter("dataInicial");
+				String dataFinal = request.getParameter("dataFinal");
+
+				if (dataInicial == null || dataInicial.isEmpty() && dataFinal == null || dataFinal.isEmpty()) {
+					request.setAttribute("listaUser",
+							daoUsuarioRepository.consultaUsuarioListRel(super.getUserLogado(request)));
+				}
+
+				request.setAttribute("dataInicial", dataInicial);
+				request.setAttribute("dataFinal", dataFinal);
+				request.getRequestDispatcher("principal/reluser.jsp").forward(request, response);
+			}
+
 			else {
 				List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList(super.getUserLogado(request));
 				request.setAttribute("modelLogins", modelLogins);
@@ -187,7 +203,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			String uf = request.getParameter("uf");
 			String numero = request.getParameter("numero");
 			String dataNascimento = request.getParameter("dataNascimento");
-			
+
 			String rendaMensal = request.getParameter("rendamensal");
 			rendaMensal = rendaMensal.split("\\ ")[1].replaceAll("\\.", "").replaceAll("\\,", ".");
 
@@ -207,7 +223,8 @@ public class ServletUsuarioController extends ServletGenericUtil {
 			modelLogin.setLocalidade(localidade);
 			modelLogin.setUf(uf);
 			modelLogin.setNumero(numero);
-			modelLogin.setDataNascimento(Date.valueOf(new SimpleDateFormat("yyyy-mm-dd").format(new SimpleDateFormat("dd/mm/yyyy").parse(dataNascimento))));
+			modelLogin.setDataNascimento(Date.valueOf(new SimpleDateFormat("yyyy-mm-dd")
+					.format(new SimpleDateFormat("dd/mm/yyyy").parse(dataNascimento))));
 			modelLogin.setRendaMensal(Double.valueOf(rendaMensal));
 
 			if (ServletFileUpload.isMultipartContent(request)) {

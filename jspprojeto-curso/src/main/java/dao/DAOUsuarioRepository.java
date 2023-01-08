@@ -161,6 +161,41 @@ public class DAOUsuarioRepository {
 
 		return retorno;
 	}
+	
+	
+	// listas os dados do usuario para o relatorio
+
+	public List<ModelLogin> consultaUsuarioListRel(Long userLogado) throws Exception {
+
+		List<ModelLogin> retorno = new ArrayList<ModelLogin>();
+
+		String sql = "select * from model_login where useradmin is false and usuario_id = " + userLogado;
+
+		PreparedStatement statement = connection.prepareStatement(sql);
+
+		ResultSet resultSet = statement.executeQuery();
+
+		/* varer as linhas do resultado do sql */
+
+		while (resultSet.next()) {
+
+			ModelLogin modelLogin = new ModelLogin();
+
+			modelLogin.setEmail(resultSet.getString("email"));
+			modelLogin.setId(resultSet.getLong("id"));
+			modelLogin.setLogin(resultSet.getString("login"));
+			modelLogin.setNome(resultSet.getString("nome"));
+			// modelLogin.setPassword(resultSet.getString("password"));
+			modelLogin.setPerfil(resultSet.getString("perfil"));
+			modelLogin.setSexo(resultSet.getString("sexo"));
+
+			retorno.add(modelLogin);
+		}
+
+		return retorno;
+	}
+	
+	
 
 	/* retorna todos os users */
 	public List<ModelLogin> consultaUsuarioList(Long userLogado) throws Exception {
