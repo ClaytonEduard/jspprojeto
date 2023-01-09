@@ -232,5 +232,13 @@ public class ModelLogin implements Serializable {
 		return Objects.equals(email, other.email) && Objects.equals(id, other.id) && Objects.equals(login, other.login)
 				&& Objects.equals(nome, other.nome) && Objects.equals(password, other.password);
 	}
+	
+	public String getMostrarTelefoneRel() {
+		String fone = "Telefone:\n";
+		for(ModelTelefone modelTelefone :telefones) {
+			fone += modelTelefone.getNumero()+"\n";
+		}
+		return fone;
+	}
 
 }

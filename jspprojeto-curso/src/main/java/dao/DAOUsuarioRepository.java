@@ -8,13 +8,12 @@ import java.util.List;
 
 import connection.SingleConnectionBanco;
 import model.ModelLogin;
+import model.ModelTelefone;
 
 public class DAOUsuarioRepository {
 
 	// importa a conexao
 	private Connection connection;
-	
-	private DAOTelefoneRepository daoTelefoneRepository = new DAOTelefoneRepository();
 
 	// inicia o contrutor
 	public DAOUsuarioRepository() {
@@ -190,7 +189,7 @@ public class DAOUsuarioRepository {
 			// modelLogin.setPassword(resultSet.getString("password"));
 			modelLogin.setPerfil(resultSet.getString("perfil"));
 			modelLogin.setSexo(resultSet.getString("sexo"));
-			modelLogin.setTelefones(daoTelefoneRepository.listFone(modelLogin.getId()));
+			modelLogin.setTelefones(this.listFone(modelLogin.getId()));
 			
 			retorno.add(modelLogin);
 		}
@@ -517,6 +516,26 @@ public class DAOUsuarioRepository {
 
 		statement.executeUpdate();
 		connection.commit();
+	}
+	
+	
+	public List<ModelTelefone> listFone(Long idUserPai) throws Exception {
+
+		List<ModelTelefone> telefones = new ArrayList<ModelTelefone>();
+		String sql = "select * from telefone where usuario_pai_id = ?";
+		PreparedStatement statement = connection.prepareStatement(sql);
+		statement.setLong(1, idUserPai);
+		ResultSet rs = statement.executeQuery();
+
+		while (rs.next()) {
+			ModelTelefone modelTelefone = new ModelTelefone();
+			modelTelefone.setId(rs.getLong("id"));
+			modelTelefone.setNumero(rs.getString("numero"));
+			modelTelefone.setUsuario_cad_id(this.consultaUsuarioID(rs.getLong("usuario_cad_id")));
+			modelTelefone.setUsuario_pai_id(this.consultaUsuarioID(rs.getLong("usuario_pai_id")));
+			telefones.add(modelTelefone);
+		}
+		return telefones;
 	}
 
 }
