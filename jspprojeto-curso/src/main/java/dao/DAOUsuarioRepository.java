@@ -13,6 +13,8 @@ public class DAOUsuarioRepository {
 
 	// importa a conexao
 	private Connection connection;
+	
+	private DAOTelefoneRepository daoTelefoneRepository = new DAOTelefoneRepository();
 
 	// inicia o contrutor
 	public DAOUsuarioRepository() {
@@ -188,7 +190,8 @@ public class DAOUsuarioRepository {
 			// modelLogin.setPassword(resultSet.getString("password"));
 			modelLogin.setPerfil(resultSet.getString("perfil"));
 			modelLogin.setSexo(resultSet.getString("sexo"));
-
+			modelLogin.setTelefones(daoTelefoneRepository.listFone(modelLogin.getId()));
+			
 			retorno.add(modelLogin);
 		}
 
