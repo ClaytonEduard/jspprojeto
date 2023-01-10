@@ -1,8 +1,10 @@
 package dao;
 
 import java.sql.Connection;
+import java.sql.Date;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -196,6 +198,47 @@ public class DAOUsuarioRepository {
 
 		return retorno;
 	}
+	
+	
+	// consultar por datas
+
+	public List<ModelLogin> consultaUsuarioListRel(Long userLogado, String dataInicial, String dataFinal) throws Exception {
+
+		List<ModelLogin> retorno = new ArrayList<ModelLogin>();
+
+		String sql = "select * from model_login where useradmin is false and usuario_id = " + userLogado + " and datanascimento >= ? and datanascimento <= ?";
+
+		PreparedStatement statement = connection.prepareStatement(sql);
+		statement.setDate(1, Date.valueOf(new SimpleDateFormat("yyyy-mm-dd")
+					.format(new SimpleDateFormat("dd/mm/yyyy").parse(dataInicial))));
+		statement.setDate(2, Date.valueOf(new SimpleDateFormat("yyyy-mm-dd")
+				.format(new SimpleDateFormat("dd/mm/yyyy").parse(dataFinal))));
+		
+
+		ResultSet resultSet = statement.executeQuery();
+
+		/* varer as linhas do resultado do sql */
+
+		while (resultSet.next()) {
+
+			ModelLogin modelLogin = new ModelLogin();
+
+			modelLogin.setEmail(resultSet.getString("email"));
+			modelLogin.setId(resultSet.getLong("id"));
+			modelLogin.setLogin(resultSet.getString("login"));
+			modelLogin.setNome(resultSet.getString("nome"));
+			// modelLogin.setPassword(resultSet.getString("password"));
+			modelLogin.setPerfil(resultSet.getString("perfil"));
+			modelLogin.setSexo(resultSet.getString("sexo"));
+			modelLogin.setTelefones(this.listFone(modelLogin.getId()));
+			
+			retorno.add(modelLogin);
+		}
+
+		return retorno;
+	}
+	
+	
 	
 	
 

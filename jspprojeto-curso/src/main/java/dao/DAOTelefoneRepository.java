@@ -20,6 +20,27 @@ public class DAOTelefoneRepository {
 
 	}
 
+	
+	public List<ModelTelefone> listFone(Long idUserPai) throws Exception{
+		List<ModelTelefone> telefones = new ArrayList<ModelTelefone>();
+		String sql = "select * from telefone where usuario_pai_id = ?";
+		PreparedStatement statement = connection.prepareStatement(sql);
+		statement.setLong(1, idUserPai);
+		ResultSet rs = statement.executeQuery();
+
+		while (rs.next()) {
+			ModelTelefone modelTelefone = new ModelTelefone();
+			modelTelefone.setId(rs.getLong("id"));
+			modelTelefone.setNumero(rs.getString("numero"));
+			modelTelefone.setUsuario_cad_id(daoUsuarioRepository.consultaUsuarioID(rs.getLong("usuario_cad_id")));
+			modelTelefone.setUsuario_pai_id(daoUsuarioRepository.consultaUsuarioID(rs.getLong("usuario_pai_id")));
+			telefones.add(modelTelefone);
+		}
+		return telefones;
+	}
+	
+	
+	
 
 	public void gravaTelefone(ModelTelefone modelTelefone) throws Exception {
 
