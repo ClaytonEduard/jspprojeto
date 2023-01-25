@@ -11,8 +11,10 @@ import net.sf.jasperreports.engine.JasperFillManager;
 import net.sf.jasperreports.engine.JasperPrint;
 import net.sf.jasperreports.engine.data.JRBeanCollectionDataSource;
 
-@SuppressWarnings({ "rawtypes", "serial" }) 
+@SuppressWarnings({ "rawtypes" }) 
 public class ReportUtil implements Serializable{
+	
+	private static final long serialVersionUID = 1L;
 		
 	public byte[] geraRelatorioPDF(List listaDados, String nomeRelatorio, ServletContext servletContext) throws Exception{
 		

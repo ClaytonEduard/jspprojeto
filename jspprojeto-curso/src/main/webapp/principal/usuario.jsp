@@ -41,7 +41,6 @@
 												<div class="card">
 													<div class="card-block">
 														<h4 class="sub-title">Cad. Usuário</h4>
-
 														<form class="form-material" enctype="multipart/form-data"
 															action="<%=request.getContextPath()%>/ServletUsuarioController"
 															method="post" id="formUser">
