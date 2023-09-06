@@ -64,7 +64,7 @@
 																</div>
 
 																<div class="col-auto my-1">
-																	<button type="submit" onclick="imprimirHtml();"
+																	<button type="button" onclick="imprimirHtml();"
 																		class="btn btn-primary">Imprimir Relatório</button>
 																	<button type="button" onclick="imprimirPdf();"
 																		class="btn btn-primary">Imprimir PDF</button>
@@ -117,23 +117,23 @@
 	</div>
 	<jsp:include page="javascriptfile.jsp"></jsp:include>
 
-	<script type="text/javascript">
+<script type="text/javascript">
 		
 	// imprimir relatorio igual a pagina
 	function imprimirHtml() {
 			document.getElementById("acaoRelatorioImprimirTipo").value = 'imprimirRelatorioUser';
-			#("#formUser").submit();
-	}
+			$("#formUser").submit();
+	};
 	// imprimir relatorio pdf
 	function imprimirPdf() {
 			document.getElementById("acaoRelatorioImprimirTipo").value = 'imprimirRelatorioPDF';
-			#("#formUser").submit();
+			$("#formUser").submit();
 			return false;
-	}
+	};
 	
-	$.noConflict(true);
+	
 		// funcao para traduzir o calendario
-		$(function() {
+		$( function() {
 			$("#dataInicial").datepicker(
 							{
 								dateFormat : 'dd/mm/yy',
