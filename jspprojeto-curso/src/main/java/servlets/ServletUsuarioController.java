@@ -1,8 +1,10 @@
 package servlets;
 
+import java.io.File;
 import java.io.IOException;
 import java.sql.Date;
 import java.text.SimpleDateFormat;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.tomcat.jakartaee.commons.compress.utils.IOUtils;
@@ -57,8 +59,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 
-			} 
-			else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("deletarAjax")) {
+			} else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("deletarAjax")) {
 
 				String idUser = request.getParameter("id");
 
@@ -66,8 +67,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 
 				response.getWriter().write("Excluido com sucesso!");
 
-			} 
-			else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("buscarUserAjax")) {
+			} else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("buscarUserAjax")) {
 
 				String nomeBusca = request.getParameter("nomeBusca");
 
@@ -83,8 +83,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 						.consultaUsuarioListTotalPaginaPaginacao(nomeBusca, super.getUserLogado(request)));
 				response.getWriter().write(json);
 
-			} 
-			else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("buscarUserAjaxPage")) {
+			} else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("buscarUserAjaxPage")) {
 
 				String nomeBusca = request.getParameter("nomeBusca");
 				String pagina = request.getParameter("pagina");
@@ -100,8 +99,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 						.consultaUsuarioListTotalPaginaPaginacao(nomeBusca, super.getUserLogado(request)));
 				response.getWriter().write(json);
 
-			} 
-			else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("buscarEditar")) {
+			} else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("buscarEditar")) {
 
 				String id = request.getParameter("id");
 
@@ -115,8 +113,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 				request.setAttribute("totalPagina", daoUsuarioRepository.totalPagina(this.getUserLogado(request)));
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 
-			} 
-			else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("listarUser")) {
+			} else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("listarUser")) {
 
 				List<ModelLogin> modelLogins = daoUsuarioRepository.consultaUsuarioList(super.getUserLogado(request));
 
@@ -127,11 +124,10 @@ public class ServletUsuarioController extends ServletGenericUtil {
 				request.setAttribute("totalPagina", daoUsuarioRepository.totalPagina(this.getUserLogado(request)));
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
 
-			} 
-			else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("downloadFoto")) {
+			} else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("downloadFoto")) {
 				String idUser = request.getParameter("id");
 				ModelLogin modelLogin = daoUsuarioRepository.consultaUsuarioID(idUser, super.getUserLogado(request));
-				
+
 				if (modelLogin.getFotouser() != null && !modelLogin.getFotouser().isEmpty()) {
 					/* Propriedade Content-Disposition para identificar o downloado no navegador */
 					response.setHeader("Content-Disposition",
@@ -139,8 +135,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 					response.getOutputStream()
 							.write(new Base64().decodeBase64(modelLogin.getFotouser().split("\\,")[1]));
 				}
-			} 
-			else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("paginar")) {
+			} else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("paginar")) {
 				Integer offset = Integer.parseInt(request.getParameter("pagina"));
 
 				List<ModelLogin> modelLogins = daoUsuarioRepository
@@ -149,8 +144,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 				request.setAttribute("modelLogins", modelLogins);
 				request.setAttribute("totalPagina", daoUsuarioRepository.totalPagina(this.getUserLogado(request)));
 				request.getRequestDispatcher("principal/usuario.jsp").forward(request, response);
-			}
-			else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("imprimirRelatorioUser")) {
+			} else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("imprimirRelatorioUser")) {
 
 				String dataInicial = request.getParameter("dataInicial");
 				String dataFinal = request.getParameter("dataFinal");
@@ -167,28 +161,30 @@ public class ServletUsuarioController extends ServletGenericUtil {
 				request.setAttribute("dataFinal", dataFinal);
 				request.getRequestDispatcher("principal/reluser.jsp").forward(request, response);
 
-			}
-			else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("imprimirRelatorioPDF")) {
+			} else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("imprimirRelatorioPDF")) {
 
 				String dataInicial = request.getParameter("dataInicial");
 				String dataFinal = request.getParameter("dataFinal");
 
 				List<ModelLogin> modelLogins = null;
 
-				if (dataInicial == null || dataInicial.isEmpty() 
-						&& dataFinal == null || dataFinal.isEmpty()) {
+				if (dataInicial == null || dataInicial.isEmpty() && dataFinal == null || dataFinal.isEmpty()) {
 					// consulta somente com usuario logado
 					modelLogins = daoUsuarioRepository.consultaUsuarioListRel(super.getUserLogado(request));
 
 				} else {
 
 					// consulta com usuario e datas
-					modelLogins = daoUsuarioRepository
-							.consultaUsuarioListRel(super.getUserLogado(request), dataInicial,dataFinal);
+					modelLogins = daoUsuarioRepository.consultaUsuarioListRel(super.getUserLogado(request), dataInicial,
+							dataFinal);
 
 				}
-				
-				byte[] relatorio = new ReportUtil().geraRelatorioPDF(modelLogins, "rel-user-jsp",
+				// inserindo o subrelatorio
+				HashMap<String, Object> params = new HashMap<String, Object>();
+				// obtem o caminho inteiro do relatorio
+				params.put("PARAM_SUB_REPORT", request.getServletContext().getRealPath("relatorio") + File.separator);
+
+				byte[] relatorio = new ReportUtil().geraRelatorioPDF(modelLogins, "rel-user-jsp", params,
 						request.getServletContext());
 				response.setHeader("Content-Disposition", "attachment;filename=arquivo.pdf");
 				response.getOutputStream().write(relatorio);
