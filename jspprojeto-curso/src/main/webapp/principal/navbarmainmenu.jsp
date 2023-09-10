@@ -13,15 +13,12 @@
 	<div class="pcoded-inner-navbar main-menu">
 		<div class="">
 			<div class="main-menu-header">
-				<c:if
-					test="${fotouser != '' && fotouser != null}">
-					<img class="img-80 img-radius"
-						src="${fotouser}"
+				<c:if test="${fotouser != '' && fotouser != null}">
+					<img class="img-80 img-radius" src="${fotouser}"
 						alt="User-Profile-Image">
 				</c:if>
-				
-				<c:if
-					test="${fotouser == '' || fotouser == null}">
+
+				<c:if test="${fotouser == '' || fotouser == null}">
 					<img class="img-80 img-radius"
 						src="<%=request.getContextPath()%>/assets/images/avatar-4.jpg"
 						alt="User-Profile-Image">
@@ -140,20 +137,21 @@
 		<div class="pcoded-navigation-label" data-i18n="nav.category.forms">Relatório
 			&amp; Tables</div>
 		<ul class="pcoded-item pcoded-left-item">
-			<li><a href="<%=request.getContextPath()%>/principal/reluser.jsp"
+			<li><a
+				href="<%=request.getContextPath()%>/principal/reluser.jsp"
 				class="waves-effect waves-dark"> <span class="pcoded-micon"><i
 						class="ti-layers"></i><b>FC</b></span> <span class="pcoded-mtext"
 					data-i18n="nav.form-components.main">Usuário</span> <span
 					class="pcoded-mcaret"></span>
 			</a></li>
-			<!-- 
-			<li><a href="bs-basic-table.html"
+
+			<li><a
+				href="<%=request.getContextPath()%>/principal/relusergrafico.jsp"
 				class="waves-effect waves-dark"> <span class="pcoded-micon"><i
 						class="ti-layers"></i><b>FC</b></span> <span class="pcoded-mtext"
-					data-i18n="nav.form-components.main">Basic Table</span> <span
+					data-i18n="nav.form-components.main">Gráfico Salário</span> <span
 					class="pcoded-mcaret"></span>
 			</a></li>
- -->
 		</ul>
 		<!-- 
 		<div class="pcoded-navigation-label" data-i18n="nav.category.forms">Chart
