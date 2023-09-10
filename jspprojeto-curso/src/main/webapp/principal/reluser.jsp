@@ -67,7 +67,9 @@
 																	<button type="button" onclick="imprimirHtml();"
 																		class="btn btn-primary">Imprimir Relatório</button>
 																	<button type="button" onclick="imprimirPdf();"
-																		class="btn btn-primary">Imprimir PDF</button>
+																		class="btn btn-danger">Imprimir PDF</button>
+																	<button type="button" onclick="imprimirExcel();"
+																		class="btn btn-success">Imprimir Excel</button>
 																</div>
 															</div>
 															<!-- fim do relatorio -->
@@ -117,24 +119,30 @@
 	</div>
 	<jsp:include page="javascriptfile.jsp"></jsp:include>
 
-<script type="text/javascript">
-		
-	// imprimir relatorio igual a pagina
-	function imprimirHtml() {
+	<script type="text/javascript">
+		// imprimir relatorio igual a pagina
+		function imprimirHtml() {
 			document.getElementById("acaoRelatorioImprimirTipo").value = 'imprimirRelatorioUser';
 			$("#formUser").submit();
-	};
-	// imprimir relatorio pdf
-	function imprimirPdf() {
+		};
+		// imprimir relatorio pdf
+		function imprimirPdf() {
 			document.getElementById("acaoRelatorioImprimirTipo").value = 'imprimirRelatorioPDF';
 			$("#formUser").submit();
 			return false;
-	};
-	
-	
+		};
+		
+		// imprimir relatorio Excel
+		function imprimirExcel() {
+			document.getElementById("acaoRelatorioImprimirTipo").value = 'imprimirRelatorioExcel';
+			$("#formUser").submit();
+			return false;
+		};
+
 		// funcao para traduzir o calendario
-		$( function() {
-			$("#dataInicial").datepicker(
+		$(function() {
+			$("#dataInicial")
+					.datepicker(
 							{
 								dateFormat : 'dd/mm/yy',
 								dayNames : [ 'Domingo', 'Segunda', 'Terça',
@@ -156,22 +164,28 @@
 		});
 
 		// funcao para traduzir o calendario
-		$(function() { $("#dataFinal").datepicker({
-		    dateFormat: 'dd/mm/yy',
-		    dayNames: ['Domingo','Segunda','Terça','Quarta','Quinta','Sexta','Sábado'],
-		    dayNamesMin: ['D','S','T','Q','Q','S','S','D'],
-		    dayNamesShort: ['Dom','Seg','Ter','Qua','Qui','Sex','Sáb','Dom'],
-		    monthNames: ['Janeiro','Fevereiro','Março','Abril','Maio','Junho','Julho','Agosto','Setembro','Outubro','Novembro','Dezembro'],
-		    monthNamesShort: ['Jan','Fev','Mar','Abr','Mai','Jun','Jul','Ago','Set','Out','Nov','Dez'],
-		    nextText: 'Próximo',
-		    prevText: 'Anterior'
+		$(function() {
+			$("#dataFinal")
+					.datepicker(
+							{
+								dateFormat : 'dd/mm/yy',
+								dayNames : [ 'Domingo', 'Segunda', 'Terça',
+										'Quarta', 'Quinta', 'Sexta', 'Sábado' ],
+								dayNamesMin : [ 'D', 'S', 'T', 'Q', 'Q', 'S',
+										'S', 'D' ],
+								dayNamesShort : [ 'Dom', 'Seg', 'Ter', 'Qua',
+										'Qui', 'Sex', 'Sáb', 'Dom' ],
+								monthNames : [ 'Janeiro', 'Fevereiro', 'Março',
+										'Abril', 'Maio', 'Junho', 'Julho',
+										'Agosto', 'Setembro', 'Outubro',
+										'Novembro', 'Dezembro' ],
+								monthNamesShort : [ 'Jan', 'Fev', 'Mar', 'Abr',
+										'Mai', 'Jun', 'Jul', 'Ago', 'Set',
+										'Out', 'Nov', 'Dez' ],
+								nextText : 'Próximo',
+								prevText : 'Anterior'
+							});
 		});
-	});
-		
-		
-	
-
-		
 	</script>
 </body>
 
