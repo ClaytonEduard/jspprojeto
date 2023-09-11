@@ -8,6 +8,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
+import beandto.BeanDtoGraficoSalarioUser;
 import connection.SingleConnectionBanco;
 import model.ModelLogin;
 import model.ModelTelefone;
@@ -23,6 +24,33 @@ public class DAOUsuarioRepository {
 		// chama a conexao para o DAOUser
 		connection = SingleConnectionBanco.getConnection();
 
+	}
+
+	// montar grafico media salario
+	public BeanDtoGraficoSalarioUser montarGraficoMediaSalario(Long userLogado) throws Exception {
+
+		String sql = "select avg(rendamensal) as media_salarial, perfil from model_login where usuario_id =? group by perfil";
+		PreparedStatement preparedStatement = connection.prepareStatement(sql);
+
+		preparedStatement.setLong(1, userLogado);
+		ResultSet resultSet = preparedStatement.executeQuery();
+
+		List<String> perfils = new ArrayList<String>();
+		List<Double> salarios = new ArrayList<Double>();
+
+		BeanDtoGraficoSalarioUser beanDtoGraficoSalarioUser = new BeanDtoGraficoSalarioUser();
+
+		// enquanto tiver dados
+		while (resultSet.next()) {
+			Double media_salarial = resultSet.getDouble("media_salarial");
+			String perfil = resultSet.getString("perfil");
+			perfils.add(perfil);
+			salarios.add(media_salarial);
+		}
+		beanDtoGraficoSalarioUser.setPerfils(perfils);
+		beanDtoGraficoSalarioUser.setSalarios(salarios);
+
+		return beanDtoGraficoSalarioUser;
 	}
 
 	public ModelLogin gravarUsuario(ModelLogin objeto, Long userLogado) throws Exception {
@@ -164,8 +192,7 @@ public class DAOUsuarioRepository {
 
 		return retorno;
 	}
-	
-	
+
 	// listas os dados do usuario para o relatorio
 
 	public List<ModelLogin> consultaUsuarioListRel(Long userLogado) throws Exception {
@@ -193,28 +220,28 @@ public class DAOUsuarioRepository {
 			modelLogin.setSexo(resultSet.getString("sexo"));
 			modelLogin.setDataNascimento(resultSet.getDate("datanascimento"));
 			modelLogin.setTelefones(this.listFone(modelLogin.getId()));
-			
+
 			retorno.add(modelLogin);
 		}
 
 		return retorno;
 	}
-	
-	
+
 	// consultar por datas
 
-	public List<ModelLogin> consultaUsuarioListRel(Long userLogado, String dataInicial, String dataFinal) throws Exception {
+	public List<ModelLogin> consultaUsuarioListRel(Long userLogado, String dataInicial, String dataFinal)
+			throws Exception {
 
 		List<ModelLogin> retorno = new ArrayList<ModelLogin>();
 
-		String sql = "select * from model_login where useradmin is false and usuario_id = " + userLogado + " and datanascimento >= ? and datanascimento <= ?";
+		String sql = "select * from model_login where useradmin is false and usuario_id = " + userLogado
+				+ " and datanascimento >= ? and datanascimento <= ?";
 
 		PreparedStatement statement = connection.prepareStatement(sql);
-		statement.setDate(1, Date.valueOf(new SimpleDateFormat("yyyy-mm-dd")
-					.format(new SimpleDateFormat("dd/mm/yyyy").parse(dataInicial))));
-		statement.setDate(2, Date.valueOf(new SimpleDateFormat("yyyy-mm-dd")
-				.format(new SimpleDateFormat("dd/mm/yyyy").parse(dataFinal))));
-		
+		statement.setDate(1, Date.valueOf(
+				new SimpleDateFormat("yyyy-mm-dd").format(new SimpleDateFormat("dd/mm/yyyy").parse(dataInicial))));
+		statement.setDate(2, Date.valueOf(
+				new SimpleDateFormat("yyyy-mm-dd").format(new SimpleDateFormat("dd/mm/yyyy").parse(dataFinal))));
 
 		ResultSet resultSet = statement.executeQuery();
 
@@ -233,16 +260,12 @@ public class DAOUsuarioRepository {
 			modelLogin.setSexo(resultSet.getString("sexo"));
 			modelLogin.setDataNascimento(resultSet.getDate("datanascimento"));
 			modelLogin.setTelefones(this.listFone(modelLogin.getId()));
-			
+
 			retorno.add(modelLogin);
 		}
 
 		return retorno;
 	}
-	
-	
-	
-	
 
 	/* retorna todos os users */
 	public List<ModelLogin> consultaUsuarioList(Long userLogado) throws Exception {
@@ -533,7 +556,7 @@ public class DAOUsuarioRepository {
 			modelLogin.setNumero(resultSet.getString("numero"));
 			modelLogin.setDataNascimento(resultSet.getDate("datanascimento"));
 			modelLogin.setRendaMensal(resultSet.getDouble("rendamensal"));
-			
+
 		}
 
 		return modelLogin;
@@ -562,8 +585,7 @@ public class DAOUsuarioRepository {
 		statement.executeUpdate();
 		connection.commit();
 	}
-	
-	
+
 	public List<ModelTelefone> listFone(Long idUserPai) throws Exception {
 
 		List<ModelTelefone> telefones = new ArrayList<ModelTelefone>();
