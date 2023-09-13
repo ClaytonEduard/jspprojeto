@@ -13,6 +13,7 @@ import org.apache.tomcat.util.http.fileupload.servlet.ServletFileUpload;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import beandto.BeanDtoGraficoSalarioUser;
 import dao.DAOUsuarioRepository;
 import jakarta.servlet.RequestDispatcher;
 import jakarta.servlet.ServletException;
@@ -192,8 +193,7 @@ public class ServletUsuarioController extends ServletGenericUtil {
 					relatorio = new ReportUtil().geraRelatorioPDF(modelLogins, "rel-user-jsp", params,
 							request.getServletContext());
 					extensao = "pdf";
-				} else
-					if (acao.equalsIgnoreCase("imprimirRelatorioExcel")) {
+				} else if (acao.equalsIgnoreCase("imprimirRelatorioExcel")) {
 					relatorio = new ReportUtil().geraRelatorioExcel(modelLogins, "rel-user-jsp", params,
 							request.getServletContext());
 					extensao = "xls";
@@ -201,6 +201,26 @@ public class ServletUsuarioController extends ServletGenericUtil {
 
 				response.setHeader("Content-Disposition", "attachment;filename=arquivo." + extensao);
 				response.getOutputStream().write(relatorio);
+			} else if (acao != null && !acao.isEmpty() && acao.equalsIgnoreCase("graficoSalario")) {
+
+				String dataInicial = request.getParameter("dataInicial");
+				String dataFinal = request.getParameter("dataFinal");
+
+				if (dataInicial == null || dataInicial.isEmpty() && dataFinal == null || dataFinal.isEmpty()) {
+					// se nao tem data para pesquisar
+					BeanDtoGraficoSalarioUser beanDtoGraficoSalarioUser = daoUsuarioRepository
+							.montarGraficoMediaSalario(super.getUserLogado(request));
+					
+					ObjectMapper mapper = new ObjectMapper();
+					String json = mapper.writeValueAsString(beanDtoGraficoSalarioUser);
+					response.getWriter().write(json);
+
+				} else {
+
+					
+
+				}
+
 			}
 
 			else {
