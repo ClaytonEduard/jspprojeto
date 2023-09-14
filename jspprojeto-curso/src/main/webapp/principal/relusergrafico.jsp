@@ -101,42 +101,48 @@
 	</script>
 
 	<script type="text/javascript">
-		var urlAction = document.getElementById('formUser').action;
-		var dataInicial = document.getElementById('dataInicial').value;
-		var dataFinal = document.getElementById('dataFinal').value;
-
-		$.ajax(
-				{
-					method : "get",
-					url : urlAction,
-					data : "dataInicial=" + dataInicial + '&dataFinal='
-							+ dataFinal + '&acao=graficoSalario',
-					success : function(response) {
-						
-						var json= JSON.parse(response);				
-						
-						var myChart = new Chart(document.getElementById('myChart'), {
-							type : 'line',
-							data : {
-								labels : json.perfils,
-								datasets : [ {
-									label : 'Gráfico de média salarial por tipo',
-									backgroundColor : 'rgb(255,99,132)',
-									borderColor : 'rgb(255,99,132)',
-									data : json.salarios,
-								} ]
-							},
-							optiond : {}
-						});	
-					
-					}
-				}).fail(function(xhr, status, errorThrown) {
-			alert('Erro ao gerar gráfico: ' + xhr.responseText);
-		});
+		var myChart = new Chart(document.getElementById('myChart'));
 
 		// funcao para gerar Grafico
 		function gerarGrafico() {
-			
+			var urlAction = document.getElementById('formUser').action;
+			var dataInicial = document.getElementById('dataInicial').value;
+			var dataFinal = document.getElementById('dataFinal').value;
+
+			$
+					.ajax(
+							{
+								method : "get",
+								url : urlAction,
+								data : "dataInicial=" + dataInicial
+										+ '&dataFinal=' + dataFinal
+										+ '&acao=graficoSalario',
+								success : function(response) {
+
+									var json = JSON.parse(response);
+
+									myChart.destroy();
+
+									myChart = new Chart(
+											document.getElementById('myChart'),
+											{
+												type : 'line',
+												data : {
+													labels : json.perfils,
+													datasets : [ {
+														label : 'Gráfico de média salarial por tipo',
+														backgroundColor : 'rgb(255,99,132)',
+														borderColor : 'rgb(255,99,132)',
+														data : json.salarios,
+													} ]
+												},
+												options : {}
+											});
+
+								}
+							}).fail(function(xhr, status, errorThrown) {
+						alert('Erro ao gerar gráfico: ' + xhr.responseText);
+					});
 		}
 
 		// funcao para traduzir o calendario
