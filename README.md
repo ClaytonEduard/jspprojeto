@@ -4,8 +4,9 @@
 ## Curso Java web
 Tecnologias utilizadas:
 - Servlets com JSP(Java -JavaServer Pages)
-- JDBC com SQL
+- JDBC com SQL (PostgreSQL)
 - Java
+- Server (Tomcat)
 - BootsTrap
 - El JSP
 - Ajax
