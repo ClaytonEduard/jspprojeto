@@ -12,7 +12,7 @@ Tecnologias utilizadas:
 - Ajax
 - JSTL
 - Consumo API WEBService ViaCEP
-- Formatação de Data com 
+- Formatação de Data com Calendar
 - JasperReport( Gerando Relatórios: Exportando em pdf e excel )
 - Gerando Gráficos com ChartJS e DTO para otimização do Gráfico
 
